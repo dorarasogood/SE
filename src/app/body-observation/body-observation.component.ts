@@ -8,35 +8,31 @@ export interface Observation {
   unit: string;
 }
 
-const ELEMENT_DATA: Observation[] = [
-  {subject: "1", type: 'Hydrogen', value: 1.0079, unit: 'H'},
-  {subject: "2", type: 'Helium', value: 4.0026, unit: 'He'},
-];
-
 @Component({
   selector: 'app-body-observation',
   templateUrl: './body-observation.component.html',
   styleUrls: ['./body-observation.component.css']
 })
 export class BodyObservationComponent implements OnInit {
-  observations: Observation[];
+  observations: Observation[] = [];
+  displayedColumns: string[] = ['subject', 'type', 'value', 'unit'];
+  dataSource;
 
   constructor(private http: HttpClient) { 
     this.http.get("http://hapi.fhir.org/baseR4/Observation?_pretty=true")
     .subscribe( data => {
-      console.log("aaa000",data);
       data["entry"].forEach(element => {
-        console.log("aaa001",element["resource"]["id"]);
-        // this.setObservation(element["resource"]);
+        this.setObservation(element["resource"]);
       });
+      this.dataSource = this.observations;
     });
   }
 
   setObservation(observation){
-    let subject = "";
-    let type = "";
+    let subject = "無";
+    let type = "無";
     let value = 0;
-    let unit = "";
+    let unit = "無";
     if(observation.hasOwnProperty("subject")){
       if(observation["subject"].hasOwnProperty("display"))
         subject = observation["subject"]["display"];
@@ -62,9 +58,6 @@ export class BodyObservationComponent implements OnInit {
     this.observations.push(ob);
   }
 
-  displayedColumns: string[] = ['subject', 'type', 'value', 'unit'];
-  // dataSource = this.observations;
-  dataSource = ELEMENT_DATA;
 
   ngOnInit() {
   }
