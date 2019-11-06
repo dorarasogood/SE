@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import {SelectionModel} from '@angular/cdk/collections';
+import {MatTableDataSource} from '@angular/material/table';
 
 export interface Observation {
   subject: string;
@@ -15,8 +17,10 @@ export interface Observation {
 })
 export class BodyObservationComponent implements OnInit {
   observations: Observation[] = [];
-  displayedColumns: string[] = ['subject', 'type', 'value', 'unit'];
+  displayedColumns: string[] = ['select', 'subject', 'type', 'value', 'unit'];
   dataSource;
+
+  selection = new SelectionModel<Observation>(true, []);
 
   constructor(private http: HttpClient) { 
     this.http.get("http://hapi.fhir.org/baseR4/Observation?_pretty=true")
@@ -24,7 +28,8 @@ export class BodyObservationComponent implements OnInit {
       data["entry"].forEach(element => {
         this.setObservation(element["resource"]);
       });
-      this.dataSource = this.observations;
+      this.dataSource = new MatTableDataSource<Observation>(this.observations);
+      this.dataSource.data.splice(this.dataSource.data.length - 1, 1);
     });
   }
 
@@ -57,6 +62,34 @@ export class BodyObservationComponent implements OnInit {
     }
     this.observations.push(ob);
   }
+
+
+  /** Whether the number of selected elements matches the total number of rows. */
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  masterToggle() {
+    this.isAllSelected() ?
+        this.selection.clear() :
+        this.dataSource.data.forEach(row => this.selection.select(row));
+  }
+
+  toggle(row){
+    this.selection.clear();
+    this.selection.select(row);
+  }
+
+  /** The label for the checkbox on the passed row */
+  // checkboxLabel(row?: Observation): string {
+  //   if (!row) {
+  //     return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
+  //   }
+  //   return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
+  // }
 
 
   ngOnInit() {

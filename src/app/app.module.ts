@@ -13,6 +13,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatButtonModule} from '@angular/material/button';
 import { HttpClientModule } from '@angular/common/http';
 import {MatTableModule} from '@angular/material/table';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatRadioModule} from '@angular/material/radio'
 
 @NgModule({
   declarations: [
@@ -29,7 +31,9 @@ import {MatTableModule} from '@angular/material/table';
     BrowserAnimationsModule,
     MatButtonModule,
     HttpClientModule,
-    MatTableModule
+    MatTableModule,
+    MatCheckboxModule,
+    MatRadioModule
   ],
   providers: [],
   bootstrap: [AppComponent]
