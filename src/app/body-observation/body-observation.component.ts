@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {SelectionModel} from '@angular/cdk/collections';
 import {MatTableDataSource} from '@angular/material/table';
@@ -22,7 +22,9 @@ export class BodyObservationComponent implements OnInit {
 
   selection = new SelectionModel<Observation>(true, []);
 
-  constructor(private http: HttpClient) { 
+  currentCheckedValue = null;
+
+  constructor(private http: HttpClient, private ren: Renderer2) { 
     this.http.get("http://hapi.fhir.org/baseR4/Observation?_pretty=true")
     .subscribe( data => {
       data["entry"].forEach(element => {
@@ -32,6 +34,8 @@ export class BodyObservationComponent implements OnInit {
       this.dataSource.data.splice(this.dataSource.data.length - 1, 1);
     });
   }
+
+  
 
   setObservation(observation){
     let subject = "無";
@@ -81,6 +85,19 @@ export class BodyObservationComponent implements OnInit {
   toggle(row){
     this.selection.clear();
     this.selection.select(row);
+  }
+
+  checkState(el) {
+    setTimeout(() => {
+      if (this.currentCheckedValue && this.currentCheckedValue === el.value) {
+        el.checked = false;
+        this.ren.removeClass(el['_elementRef'].nativeElement, 'cdk-focused');
+        this.ren.removeClass(el['_elementRef'].nativeElement, 'cdk-program-focused');
+        this.currentCheckedValue = null;
+      } else {
+        this.currentCheckedValue = el.value;
+      }
+    })
   }
 
   /** The label for the checkbox on the passed row */
