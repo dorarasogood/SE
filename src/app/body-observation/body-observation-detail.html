@@ -1,0 +1,25 @@
+<h1 mat-dialog-title>Hi</h1>
+<div mat-dialog-content>
+  <p>What's your favorite animal?</p>
+  <mat-form-field>
+    <input matInput placeholder="Value" [(ngModel)]="value">
+  </mat-form-field>
+
+  <br>
+
+  <mat-form-field>
+      <input matInput placeholder="Unit" [(ngModel)]="unit">
+  </mat-form-field>
+  <!-- <mat-form-field>
+  <mat-label>Favorite food</mat-label>
+  <mat-select>
+    <mat-option *ngFor="let food of foods" [value]="food.value">
+      {{food.viewValue}}
+    </mat-option>
+  </mat-select>
+  </mat-form-field> -->
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">No Thanks</button>
+  <button mat-button (click)="onOkClick()" cdkFocusInitial>Ok</button>
+</div>
