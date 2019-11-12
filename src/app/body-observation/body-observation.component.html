@@ -1,7 +1,7 @@
 <br>
 <div class="example-button-row">
   <button mat-raised-button [disabled] = "false" (click)="clickNew()">新增</button>
-  <button mat-raised-button [disabled] = "editDisabled">修改</button>
+  <button mat-raised-button [disabled] = "editDisabled" (click) = "clickEdit()">修改</button>
   <button mat-raised-button [disabled] = "readDisabled">讀取</button>
   <button mat-raised-button [disabled] = "deleteDisabled" (click)="clickDelete()">刪除</button>
 </div>

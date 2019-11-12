@@ -5,7 +5,7 @@ import { HomeComponent } from './home/home.component';
 import { BodyObservationComponent } from './body-observation/body-observation.component';
 import { DiagnosisComponent } from './diagnosis/diagnosis.component';
 import { CarePlanComponent } from './care-plan/care-plan.component';
-import { DialogOverviewExampleDialog } from './body-observation/body-observation-detail.component';
+import { BodyObservationDetailDialog } from './body-observation/body-observation-detail.component';
 
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
@@ -24,7 +24,7 @@ import {MatSelectModule} from '@angular/material/select';
   declarations: [
     AppComponent,
     HomeComponent,
-    DialogOverviewExampleDialog,
+    BodyObservationDetailDialog,
     BodyObservationComponent,
     DiagnosisComponent,
     CarePlanComponent
@@ -45,7 +45,7 @@ import {MatSelectModule} from '@angular/material/select';
     MatSelectModule
   ],
   entryComponents: [
-    DialogOverviewExampleDialog
+    BodyObservationDetailDialog
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,14 +1,14 @@
 import { Component, OnInit, Renderer2, ViewChild } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import {MatTableDataSource, MatTable} from '@angular/material/table';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import {DialogData, DialogOverviewExampleDialog} from './body-observation-detail.component'
-
+import {MatDialog} from '@angular/material/dialog';
+import {BodyObservationDetailDialog} from './body-observation-detail.component'
+import { BodyObservationService } from '../body-observation.service';
 export interface Observation {
   // subject: string;
   type: string;
   value: number;
   unit: string;
+  id: number;
 }
 
 @Component({
@@ -18,7 +18,6 @@ export interface Observation {
 })
 export class BodyObservationComponent implements OnInit {
   @ViewChild(MatTable, {static:false}) table : MatTable<Observation>;
-  observations: Observation[] = [];
   displayedColumns: string[] = ['select', 'type', 'value', 'unit'];
   dataSource;
   editDisabled = true;
@@ -31,33 +30,33 @@ export class BodyObservationComponent implements OnInit {
 
   currentCheckedValue = null;
   ngOnInit() {}
-  constructor(private http: HttpClient, private ren: Renderer2, public dialog: MatDialog) { 
-    this.http.get("http://hapi.fhir.org/baseR4/Observation?patient=56899&_pretty=true")
-    .subscribe( data => {
-      console.log("AAA000", data);
+  constructor(private ren: Renderer2, public dialog: MatDialog, private bodyObservationService: BodyObservationService) { 
+    bodyObservationService.getAllObservation(data => {
+      this.dataSource = new MatTableDataSource<Observation>([]);
       data["entry"].forEach(element => {
         this.setObservation(element["resource"]);
       });
-      this.dataSource = new MatTableDataSource<Observation>(this.observations);
-      // this.dataSource.data.splice(this.dataSource.data.length - 1, 1);
-    });
+    }, this.failureCallback);
+  }
+
+  private failureCallback(error){
+    console.log("error = ", error);
   }
 
   setObservation(observation){
-    console.log("AAA001", observation);
-    // let subject = "無";
+    // console.log("AAA001", observation);
     let type = "無";
     let value = 0;
     let unit = "無";
-    // if(observation.hasOwnProperty("subject")){
-    //   if(observation["subject"].hasOwnProperty("display"))
-    //     subject = observation["subject"]["display"];
-    // }
-    if(observation.hasOwnProperty("code")){
-      if(observation["code"].hasOwnProperty("coding")){
-        if(observation["code"]["coding"].hasOwnProperty("display"))
+    let id = -1;
+    if(observation.hasOwnProperty("id")){
+      id = observation['id'];
+    }
+    if(observation.hasOwnProperty("code") && observation["code"].hasOwnProperty("coding") && observation["code"]["coding"].hasOwnProperty("display")){
+      // if(observation["code"].hasOwnProperty("coding")){
+        // if(observation["code"]["coding"].hasOwnProperty("display"))
           type = observation["code"]["coding"]["display"];
-      }
+      // }
     }
     if(observation.hasOwnProperty("valueQuantity")){
       if(observation["valueQuantity"].hasOwnProperty("value"))
@@ -69,9 +68,10 @@ export class BodyObservationComponent implements OnInit {
       // 'subject': subject,
       'type': type,
       'value': value,
-      'unit': unit
+      'unit': unit,
+      'id': id
     }
-    this.observations.push(ob);
+    this.dataSource.data.push(ob);
   }
 
   checkState(el, row) {
@@ -100,48 +100,53 @@ export class BodyObservationComponent implements OnInit {
   }
 
   clickDelete(){
-    let index = this.dataSource.data.findIndex((element)=>{
-      return element === this.currentSelectedRow;
-    })
-    this.currentSelectedRow = null;
-    this.dataSource.data.splice(index, 1);
-    this.table.renderRows();
-    this.enableButtonBySelectData(false);
+    this.bodyObservationService.deleteObservation(this.currentSelectedRow.id, data=>{
+      let index = this.dataSource.data.findIndex((element)=>{
+        return element === this.currentSelectedRow;
+      })
+      this.currentSelectedRow = null;
+      this.dataSource.data.splice(index, 1);
+      this.table.renderRows();
+      this.enableButtonBySelectData(false);
+    }, this.failureCallback);
   }
 
   clickNew(){
-    
-      const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
-        width: '500px',
-        data: {value: this.value, unit: this.unit}
-      });
-  
-      dialogRef.afterClosed().subscribe(result => {
-        console.log('The dialog was closed', result);
-        this.http.get("http://hapi.fhir.org/baseR4/Observation/" + result + "?_pretty=true")
-        .subscribe((data)=>{
-          let type = "無";
-          let value = 0;
-          let unit = "無";
-          
-          if(data.hasOwnProperty("valueQuantity")){
-            if(data["valueQuantity"].hasOwnProperty("value"))
-              value = data["valueQuantity"]["value"];
-            if(data["valueQuantity"].hasOwnProperty("unit"))
-              unit = data["valueQuantity"]["unit"];
-          }
-          let obj = {
-            'type': type,
-            'value': value,
-            'unit': unit
-          }
-          this.dataSource.data.push(obj);
-          this.table.renderRows();
-        });
-      });
+    const dialogRef = this.dialog.open(BodyObservationDetailDialog, {
+      width: '500px'
+    });
 
-    
+    dialogRef.afterClosed().subscribe(result => {
+      // console.log('The dialog was closed', result);
+      if(result === undefined) return;
+      this.bodyObservationService.getObservation(result, 
+        (data)=>{
+          this.setObservation(data);
+          this.table.renderRows();
+        }, this.failureCallback);
+    });
   }
 
-  
+  clickEdit(){
+    const dialogRef = this.dialog.open(BodyObservationDetailDialog, {
+      width: '500px',
+      data: this.currentSelectedRow.id
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result === undefined) return;
+      // console.log('The dialog was closed', result);
+      
+        
+          if(result.hasOwnProperty("valueQuantity")){
+            if(result["valueQuantity"].hasOwnProperty("value"))
+              this.currentSelectedRow.value = result["valueQuantity"]["value"];
+            if(result["valueQuantity"].hasOwnProperty("unit"))
+              this.currentSelectedRow.unit = result["valueQuantity"]["unit"];
+          }
+          this.table.renderRows();
+      
+      
+      });
+  }
 }
