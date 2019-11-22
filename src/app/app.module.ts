@@ -20,6 +20,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material';
 import {MatSelectModule} from '@angular/material/select';
+import { LogInComponent } from './log-in/log-in.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,7 +28,8 @@ import {MatSelectModule} from '@angular/material/select';
     BodyObservationDetailDialog,
     BodyObservationComponent,
     DiagnosisComponent,
-    CarePlanComponent
+    CarePlanComponent,
+    LogInComponent
   ],
   imports: [
     BrowserModule,
