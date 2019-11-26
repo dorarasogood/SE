@@ -7,9 +7,10 @@ import { DiagnosisComponent } from './diagnosis/diagnosis.component';
 import { CarePlanComponent } from './care-plan/care-plan.component';
 import { BodyObservationDetailDialog } from './body-observation/body-observation-detail.component';
 
+
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule } from '@angular/material/button';
 import { HttpClientModule } from '@angular/common/http';
@@ -21,6 +22,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material';
 import {MatSelectModule} from '@angular/material/select';
 import { LogInComponent } from './log-in/log-in.component';
+import { SignUpComponent } from './sign-up/sign-up.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,12 +31,14 @@ import { LogInComponent } from './log-in/log-in.component';
     BodyObservationComponent,
     DiagnosisComponent,
     CarePlanComponent,
-    LogInComponent
+    LogInComponent,
+    SignUpComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     BrowserAnimationsModule,
     MatButtonModule,
     HttpClientModule,

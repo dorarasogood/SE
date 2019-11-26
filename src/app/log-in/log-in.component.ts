@@ -20,6 +20,10 @@ export class LogInComponent {
     // this.router.navigate(['welcome']);
   }
 
+  signUpClick(): void{
+    this.router.navigate(['/sign-up']);
+  }
+
   login(loginForm: NgForm): void {
     if (loginForm && loginForm.valid) {
       console.log("AAA000");

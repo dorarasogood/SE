@@ -5,6 +5,7 @@ import { LogInComponent } from './log-in/log-in.component'
 import { BodyObservationComponent } from './body-observation/body-observation.component'
 import { DiagnosisComponent } from "./diagnosis/diagnosis.component";
 import { CarePlanComponent } from "./care-plan/care-plan.component";
+import { SignUpComponent } from './sign-up/sign-up.component';
 
 const routes: Routes = [
   {
@@ -34,6 +35,10 @@ const routes: Routes = [
     path: '',
     redirectTo: 'log-in',
     pathMatch: 'full'
+  },
+  {
+    path: 'sign-up',
+    component: SignUpComponent
   }
 ];
 
