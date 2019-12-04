@@ -1,59 +1,44 @@
-<div class='container'>
-    <div class="card">
-      <div class="card-header">
-        <span style="font-size: 1.3rem;">{{pageTitle}}</span>
-      </div>
-      <div class="card-body">
-        <form novalidate
-              (ngSubmit)="manageUserInfo(userInfoForm)"
-              #userInfoForm="ngForm"
-              autocomplete="off">
-          <fieldset>
+<nav class="navbar navbar-expand navbar-light bg-light">
+    <a class="navbar-brand">使用者資訊</a>
   
-            <div class="form-group row">
-              <label class="col-md-2 col-form--label"
-                     for="passwordId">Password</label>
+    <ul class="navbar-nav ml-auto">
+      <li class='nav-item'>
+        <a class="nav-link"
+           routerLink='/home' style="font-size: large;"><b>返回</b></a>
+      </li>
+    </ul>
+  </nav>
   
-              <div class="col-md-8">
-                <input class="form-control"
-                       id="passwordId"
-                       type="password"
-                       placeholder="Password (required)"
-                       required
-                       ngModel
-                       name="password"
-                       #passwordVar="ngModel"
-                       [ngClass]="{'is-invalid': (passwordVar.touched || passwordVar.dirty) && !passwordVar.valid }" />
-                <span class="invalid-feedback">
-                  <span *ngIf="passwordVar.errors?.required">
-                    Password is required.
-                  </span>
-                </span>
-              </div>
-            </div>
+  <router-outlet></router-outlet>
   
-            <div class="row">
-              <div class="col-md-4 offset-md-2">
-                <button class="btn btn-primary"
-                        type="submit"
-                        style="width:80px;margin-right:10px"
-                        [disabled]="!userInfoForm.valid">
-                  Update
-                </button>
-                <button class="btn btn-outline-secondary"
-                        type="button"
-                        style="width:80px"
-                        [routerLink]="['/home']">
-                  Cancel
-                </button>
-              </div>
-            </div>
-          </fieldset>
-        </form>
-      </div>
-  
-      <div class="alert alert-danger"
-           *ngIf="errorMessage">{{errorMessage}}
-      </div>
-    </div>
-  </div>
+<!-- <h3 class="bg-primary text-white p-1">使用者資訊</h3> -->
+<div style="margin-left: 30%">
+  <mat-list role="list" *ngIf="!editMode">
+    <mat-list-item role="listitem">姓名:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{userInfo.name}}</mat-list-item>
+    <mat-list-item role="listitem">性別:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{userInfo.gender}}</mat-list-item>
+    <mat-list-item role="listitem">信箱:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{userInfo.email}}</mat-list-item>
+    <mat-list-item role="listitem">生日:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{userInfo.birthDate}}</mat-list-item>
+  </mat-list>
+  <form *ngIf= "editMode">
+      <mat-form-field style="width: 30%">
+        <input matInput placeholder="姓名" [(ngModel)]="userInfo.name" [ngModelOptions]="{standalone: true}">
+      </mat-form-field>
+      <br>
+      <mat-form-field style="width: 30%">
+        <input matInput placeholder="性別" [(ngModel)]="userInfo.gender" [ngModelOptions]="{standalone: true}">
+      </mat-form-field>
+      <br>
+      <mat-form-field style="width: 30%">
+        <input matInput placeholder="信箱" [(ngModel)]="userInfo.email" [ngModelOptions]="{standalone: true}">
+      </mat-form-field>
+      <br>
+      <mat-form-field style="width: 30%">
+        <input matInput placeholder="生日" [(ngModel)]="userInfo.birthDate" [ngModelOptions]="{standalone: true}">
+      </mat-form-field>
+    </form>
+  <br>
+  <button mat-raised-button color="primary" style="margin-left: 20%" (click)= "update()" *ngIf="!editMode">變更</button>
+  <button mat-raised-button color="primary" style="margin-left: 20%" (click)= "save()" *ngIf="editMode">儲存</button>
+  <button mat-raised-button color="primary" style="margin-left: 5%" (click)= "cancel()" *ngIf="editMode">取消</button>
+</div>
+

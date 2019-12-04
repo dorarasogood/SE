@@ -22,10 +22,12 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material';
 import {MatSelectModule} from '@angular/material/select';
+import {MatListModule} from '@angular/material/list';
 import { LogInComponent } from './log-in/log-in.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { SeLineChartComponent } from './se-line-chart/se-line-chart.component';
 import { UserInfoComponent } from './user-info/user-info.component';
+import { AccountManageComponent } from './account-manage/account-manage.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -37,7 +39,8 @@ import { UserInfoComponent } from './user-info/user-info.component';
     LogInComponent,
     SignUpComponent,
     SeLineChartComponent,
-    UserInfoComponent
+    UserInfoComponent,
+    AccountManageComponent
   ],
   imports: [
     BrowserModule,
@@ -54,7 +57,8 @@ import { UserInfoComponent } from './user-info/user-info.component';
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-    ChartsModule
+    ChartsModule,
+    MatListModule
   ],
   entryComponents: [
     BodyObservationDetailDialog

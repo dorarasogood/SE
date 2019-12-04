@@ -8,6 +8,7 @@ import { CarePlanComponent } from "./care-plan/care-plan.component";
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { SeLineChartComponent } from "./se-line-chart/se-line-chart.component";
 import { UserInfoComponent } from "./user-info/user-info.component";
+import { AccountManageComponent } from "./account-manage/account-manage.component";
 const routes: Routes = [
   {
     path: 'home',
@@ -48,6 +49,10 @@ const routes: Routes = [
   {
     path: 'user-info',
     component: UserInfoComponent
+  },
+  {
+    path: 'account-manage',
+    component: AccountManageComponent
   }
 ];
 
