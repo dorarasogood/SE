@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { ChartsModule } from "ng2-charts";
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -23,6 +24,8 @@ import {MatInputModule} from '@angular/material';
 import {MatSelectModule} from '@angular/material/select';
 import { LogInComponent } from './log-in/log-in.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
+import { SeLineChartComponent } from './se-line-chart/se-line-chart.component';
+import { UserInfoComponent } from './user-info/user-info.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -32,7 +35,9 @@ import { SignUpComponent } from './sign-up/sign-up.component';
     DiagnosisComponent,
     CarePlanComponent,
     LogInComponent,
-    SignUpComponent
+    SignUpComponent,
+    SeLineChartComponent,
+    UserInfoComponent
   ],
   imports: [
     BrowserModule,
@@ -48,7 +53,8 @@ import { SignUpComponent } from './sign-up/sign-up.component';
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
-    MatSelectModule
+    MatSelectModule,
+    ChartsModule
   ],
   entryComponents: [
     BodyObservationDetailDialog

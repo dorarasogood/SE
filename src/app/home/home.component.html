@@ -19,6 +19,13 @@
            [routerLinkActiveOptions]="{ exact: true }"
            routerLink='/home/care-plan'>照護</a>
       </li>
+      <li class='nav-item'>
+        <a class='nav-link'
+           routerLinkActive='active'
+           [routerLinkActiveOptions]="{ exact: true }"
+           routerLink='/home/chart'>圖表</a>
+      </li>
+      
       <!-- <li class='nav-item'>
         <a class='nav-link'
            routerLinkActive='active'
@@ -31,19 +38,24 @@
       <li class='nav-item'
           *ngIf="isLoggedIn">
         <a class="nav-link"
-           routerLink='/login'>Welcome {{ userName }}</a>
+           routerLink='/home'>Welcome {{ userName }}</a>
       </li>
-  
+      
+      <li class='nav-item'
+          *ngIf="isLoggedIn">
+        <a class="nav-link"
+          routerLink='/user-info'>UserInfo</a>
+      </li>
+
       <li *ngIf="!isLoggedIn">
         <a class="nav-link"
-           routerLink='/login'>Log In</a>
+          routerLink='/log-in'>Log In</a>
       </li>
       <li *ngIf="isLoggedIn">
         <a class="nav-link"
            (click)="logOut()">Log Out</a>
       </li>
     </ul>
-  
   </nav>
-
+  
   <router-outlet></router-outlet>

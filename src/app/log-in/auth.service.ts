@@ -50,6 +50,40 @@ export class AuthService {
     .subscribe(successCallback, failureCallback);
   }
 
+  getPatientId(userName:string, password: string, successCallback, failureCallback): void{
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+    let options = {
+      headers
+    };
+    var obj = {
+      "userName": userName,
+      "password": password
+    }
+    // console.log("obj.userName:", obj.userName);
+    // console.log("obj.password:", obj.password);
+
+    this.http.post<any>("http://127.0.0.1:3000/users", obj, options)
+    .subscribe(successCallback, failureCallback);
+  }
+
+  manageUserInfo(userName: string, password: string, successCallback, failureCallback): void{
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+    let options = {
+      headers
+    };
+    var obj = {
+      "userName": userName,
+      "password": password
+    };
+    this.http.post<any>("http://127.0.0.1:3000/users/userInfo", obj, options)
+    .subscribe(successCallback, failureCallback);
+  }
+
+
   logout(): void {
     this.currentUser = null;
   }

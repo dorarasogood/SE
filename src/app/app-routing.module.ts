@@ -6,7 +6,8 @@ import { BodyObservationComponent } from './body-observation/body-observation.co
 import { DiagnosisComponent } from "./diagnosis/diagnosis.component";
 import { CarePlanComponent } from "./care-plan/care-plan.component";
 import { SignUpComponent } from './sign-up/sign-up.component';
-
+import { SeLineChartComponent } from "./se-line-chart/se-line-chart.component";
+import { UserInfoComponent } from "./user-info/user-info.component";
 const routes: Routes = [
   {
     path: 'home',
@@ -23,6 +24,10 @@ const routes: Routes = [
       {
         path: 'care-plan',
         component: CarePlanComponent
+      },
+      {
+        path: 'chart',
+        component: SeLineChartComponent
       }
     ],
     data: { preload: true }
@@ -39,6 +44,10 @@ const routes: Routes = [
   {
     path: 'sign-up',
     component: SignUpComponent
+  },
+  {
+    path: 'user-info',
+    component: UserInfoComponent
   }
 ];
 

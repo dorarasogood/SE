@@ -32,7 +32,6 @@ export class LogInComponent {
       this.authService.login(userName, password,(data)=>{
         console.log("callback", data);
         this.router.navigate(['/home']);
-        
       }, ()=>{console.log("error")});
 
       // if (this.authService.redirectUrl) {
