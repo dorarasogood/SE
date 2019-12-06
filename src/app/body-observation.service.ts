@@ -9,7 +9,7 @@ export class BodyObservationService {
   constructor(private http: HttpClient) { }
 
   getAllObservation(successCallback, failureCallback){
-    this.http.get("http://hapi.fhir.org/baseR4/Observation?patient=56899&_pretty=true")
+    this.http.get("http://hapi.fhir.org/baseR4/Observation?patient=56899&_pretty=true&_format=json")
     .subscribe(successCallback, failureCallback);
   }
   deleteObservation(id, successCallback, failureCallback){
@@ -17,7 +17,7 @@ export class BodyObservationService {
     .subscribe(successCallback, failureCallback);
   };
   getObservation(id, successCallback, failureCallback){
-    this.http.get("http://hapi.fhir.org/baseR4/Observation/" + id + "?_pretty=true")
+    this.http.get("http://hapi.fhir.org/baseR4/Observation/" + id + "?_pretty=true&_format=json")
     .subscribe(successCallback, failureCallback);
   }
   createObservation(body, successCallback, failureCallback){

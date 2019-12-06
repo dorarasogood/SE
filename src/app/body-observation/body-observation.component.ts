@@ -3,12 +3,14 @@ import {MatTableDataSource, MatTable} from '@angular/material/table';
 import {MatDialog} from '@angular/material/dialog';
 import {BodyObservationDetailDialog} from './body-observation-detail.component'
 import { BodyObservationService } from '../body-observation.service';
+import * as moment from 'moment';
 export interface Observation {
   // subject: string;
   type: string;
   value: number;
   unit: string;
   id: number;
+  date: string
 }
 
 @Component({
@@ -18,13 +20,25 @@ export interface Observation {
 })
 export class BodyObservationComponent implements OnInit {
   @ViewChild(MatTable, {static:false}) table : MatTable<Observation>;
-  displayedColumns: string[] = ['select', 'type', 'value', 'unit'];
+  displayedColumns: string[] = ['select', 'type', 'value', 'unit', 'date'];
   dataSource;
   editDisabled = true;
   readDisabled = true;
   deleteDisabled = true;
   value: number;
   unit: string;
+
+  selected = {start: moment(), end: moment()};
+  locale = {
+    applyLabel: 'Apply',
+    cancelLabel: 'Cancel',
+    format: 'YYYY-MM-DD'
+  }
+
+  change(event){
+    console.log("AAA000", this.selected.start.format('YYYY-MM-DD'));
+    console.log("AAA000", this.selected.end.format('YYYY-MM-DD'));
+  }
 
   private currentSelectedRow = null;
 
@@ -49,6 +63,8 @@ export class BodyObservationComponent implements OnInit {
     let value = 0;
     let unit = "無";
     let id = -1;
+    let date = "無";
+
     if(observation.hasOwnProperty("id")){
       id = observation['id'];
     }
@@ -64,12 +80,18 @@ export class BodyObservationComponent implements OnInit {
       if(observation["valueQuantity"].hasOwnProperty("unit"))
         unit = observation["valueQuantity"]["unit"];
     }
+
+    if(observation.hasOwnProperty("effectiveDateTime")){
+      console.log("1232154 ", observation["effectiveDateTime"]);
+      date = observation["effectiveDateTime"];
+    }
     let ob = {
       // 'subject': subject,
       'type': type,
       'value': value,
       'unit': unit,
-      'id': id
+      'id': id,
+      'date': date
     }
     this.dataSource.data.push(ob);
   }
@@ -144,6 +166,11 @@ export class BodyObservationComponent implements OnInit {
             if(result["valueQuantity"].hasOwnProperty("unit"))
               this.currentSelectedRow.unit = result["valueQuantity"]["unit"];
           }
+
+          if(result.hasOwnProperty("effectiveDateTime")){
+            this.currentSelectedRow.date = result["effectiveDateTime"];
+          }
+
           this.table.renderRows();
       
       

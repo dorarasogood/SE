@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { ChartsModule } from "ng2-charts";
+import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -23,6 +24,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material';
 import {MatSelectModule} from '@angular/material/select';
 import {MatListModule} from '@angular/material/list';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material/core';
 import { LogInComponent } from './log-in/log-in.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { SeLineChartComponent } from './se-line-chart/se-line-chart.component';
@@ -58,7 +61,14 @@ import { AccountManageComponent } from './account-manage/account-manage.componen
     MatInputModule,
     MatSelectModule,
     ChartsModule,
-    MatListModule
+    MatListModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    NgxDaterangepickerMd.forRoot({
+      // separator: '-',
+      cancelLabel: 'Cancel',
+      applyLabel: 'Apply'
+    })
   ],
   entryComponents: [
     BodyObservationDetailDialog

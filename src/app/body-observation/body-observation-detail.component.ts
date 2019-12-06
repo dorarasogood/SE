@@ -1,11 +1,14 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { BodyObservationService } from '../body-observation.service';
+import * as moment from 'moment';
+// import {FormControl} from '@angular/forms';
 
 
 export interface DialogData {
     value: number;
     unit: string;
+    date: Date; 
 }
 
 export interface Food {
@@ -22,6 +25,7 @@ export class BodyObservationDetailDialog implements OnInit {
     value: number;
     unit: string;
     title: string;
+    date: Date;
 
     foods: Food[] = [
         {value: 'steak-0', viewValue: 'Steak'},
@@ -45,6 +49,11 @@ export class BodyObservationDetailDialog implements OnInit {
               if(data["valueQuantity"].hasOwnProperty("unit"))
                 this.unit = data["valueQuantity"]["unit"];
             }
+
+            console.log("aaaa123", data);
+            if(data.hasOwnProperty("effectiveDateTime")){
+              this.date = new Date(data["effectiveDateTime"]);
+            }
           },error=>{
             console.log("error = ", error)
           });
@@ -59,6 +68,10 @@ export class BodyObservationDetailDialog implements OnInit {
       interface iBody {
         [key: string]: any
       }
+
+      let dateString = moment(this.date).format("YYYY-MM-DD");
+
+      
       var body:iBody ={
         "resourceType": "Observation",
         "subject": {
@@ -67,7 +80,8 @@ export class BodyObservationDetailDialog implements OnInit {
         "valueQuantity": {
           "value": this.value,
           "unit": this.unit
-        }
+        },
+        "effectiveDateTime": dateString
       };
       if (this.id!= undefined){
         body.id = this.id;
@@ -86,6 +100,7 @@ export class BodyObservationDetailDialog implements OnInit {
     }
     onUpdateClick(): void {
       let body = this.httpBody();
+      console.log("aaa123", body);
       this.bodyObservationService.editObservation(this.id, body, data=>{
         
         this.dialogRef.close(data);

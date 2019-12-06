@@ -1,10 +1,30 @@
 <br>
-<div class="example-button-row">
+
+<div>
   <button mat-raised-button [disabled] = "false" (click)="clickNew()">新增</button>
   <button mat-raised-button [disabled] = "editDisabled" (click) = "clickEdit()">修改</button>
   <button mat-raised-button [disabled] = "readDisabled">讀取</button>
   <button mat-raised-button [disabled] = "deleteDisabled" (click)="clickDelete()">刪除</button>
+
+  
+  <span style="margin-left: 40%;">
+    Date Range:&nbsp;
+    <input type="text" ngxDaterangepickerMd
+      startKey="start"
+      endKey="end"
+      [(ngModel)]="selected"
+      [locale]="locale" 
+      placeholder="Choose date" 
+      (change)="change($event)" showCancel="true"/>
+  </span>
 </div>
+<!--   
+  <div style="margin-left: 10%;">
+      <!-- <input type="text" ngxDaterangepickerMd [(ngModel)]="selected" placeholder="Choose date" style="margin-right: 10%"/> -->
+      
+<!-- <input type="text" ngxDaterangepickerMd
+[(ngModel)]="selected" placeholder="Choose date" (change)="change($event)"/> -->
+
 
 <br>
 
@@ -15,49 +35,38 @@
     
     <!-- Checkbox Column -->
     <ng-container matColumnDef="select">
-      <th mat-header-cell *matHeaderCellDef>
-        <!-- <mat-checkbox (change)="$event ? masterToggle() : null"
-                      [checked]="selection.hasValue() && isAllSelected()"
-                      [indeterminate]="selection.hasValue() && !isAllSelected()"
-                      >
-        </mat-checkbox> -->
+      <th mat-header-cell *matHeaderCellDef  style="width: 100px;">
       </th>
       <td mat-cell *matCellDef="let row">
-        <!-- <mat-checkbox (click)="toggle(row)"
-                      
-                      [checked]="selection.isSelected(row)"
-                      >
-        </mat-checkbox> -->
         <mat-radio-button #button [value]="row" (click)="checkState(button, row)">
         <!-- <mat-radio-button #button [value]="row" (click)="checkState(button)"> -->
         </mat-radio-button>
         <!-- <mat-radio-button></mat-radio-button> -->
       </td>
     </ng-container>
-  
-    <!-- Position Column -->
-    <!-- <ng-container matColumnDef="subject">
-      <th mat-header-cell *matHeaderCellDef> 受測者 </th>
-      <td mat-cell *matCellDef="let element"> {{element.subject}} </td>
-    </ng-container> -->
-  
+
     <!-- Name Column -->
     <ng-container matColumnDef="type">
-      <th mat-header-cell *matHeaderCellDef> 檢測項目 </th>
+      <th mat-header-cell *matHeaderCellDef style="width: 300px;"> 檢測項目 </th>
       <td mat-cell *matCellDef="let element"> {{element.type}} </td>
     </ng-container>
   
     <!-- Weight Column -->
     <ng-container matColumnDef="value">
-      <th mat-header-cell *matHeaderCellDef> 數值 </th>
+      <th mat-header-cell *matHeaderCellDef style="width: 300px;"> 數值 </th>
       <td mat-cell *matCellDef="let element"> {{element.value}} </td>
     </ng-container>
   
     <!-- Symbol Column -->
     <ng-container matColumnDef="unit">
-      <th mat-header-cell *matHeaderCellDef> 單位 </th>
+      <th mat-header-cell *matHeaderCellDef style="width: 250px;"> 單位 </th>
       <td mat-cell *matCellDef="let element"> {{element.unit}} </td>
     </ng-container>
+
+    <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef > 時間 </th>
+        <td mat-cell *matCellDef="let element"> {{element.date}} </td>
+      </ng-container>
   
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

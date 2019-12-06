@@ -7,8 +7,10 @@ import { Router } from '@angular/router';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  pageTitle;
+  pageTitle: string;
   isLoggedIn = true;
+  userName = "Jeff";
+
   constructor(private router: Router) {
     this.pageTitle = "Health Tracking System";
   }
@@ -17,10 +19,10 @@ export class HomeComponent implements OnInit {
   //   this.router.navigate['/chart'];
   // }
 
-  logOut(): void {
-    this.isLoggedIn = false;
-    this.router.navigate['/home'];
-  }
+  // logOut(): void {
+  //   // this.isLoggedIn = false;
+  //   this.router.navigate['/log-in'];
+  // }
 
   ngOnInit() {
   }
