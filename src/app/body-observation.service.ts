@@ -17,7 +17,7 @@ export class BodyObservationService {
     .subscribe(successCallback, failureCallback);
   };
   getObservation(id, successCallback, failureCallback){
-    this.http.get("http://hapi.fhir.org/baseR4/Observation/" + id + "?_pretty=true&_format=json")
+    this.http.get("http://hapi.fhir.org/baseR4/Observation?_id=" + id + "&_pretty=true")
     .subscribe(successCallback, failureCallback);
   }
   createObservation(body, successCallback, failureCallback){

@@ -42,17 +42,19 @@ export class BodyObservationDetailDialog implements OnInit {
           this.title = "Create new observation";
         }else{
           this.title = "Edit observation";
-          bodyObservationService.getObservation(this.id, data =>{
-            if(data.hasOwnProperty("valueQuantity")){
-              if(data["valueQuantity"].hasOwnProperty("value"))
-                this.value = data["valueQuantity"]["value"];
-              if(data["valueQuantity"].hasOwnProperty("unit"))
-                this.unit = data["valueQuantity"]["unit"];
-            }
-
-            console.log("aaaa123", data);
-            if(data.hasOwnProperty("effectiveDateTime")){
-              this.date = new Date(data["effectiveDateTime"]);
+          bodyObservationService.getObservation(this.id, result =>{
+            // console.log("aaaa123", data["entry"][0]["resource"]);
+            if(result.hasOwnProperty("entry")){
+              let data = result["entry"][0]["resource"];
+              if(data.hasOwnProperty("valueQuantity")){
+                if(data["valueQuantity"].hasOwnProperty("value"))
+                  this.value = data["valueQuantity"]["value"];
+                if(data["valueQuantity"].hasOwnProperty("unit"))
+                  this.unit = data["valueQuantity"]["unit"];
+              }
+              if(data.hasOwnProperty("effectiveDateTime")){
+                this.date = new Date(data["effectiveDateTime"]);
+              }
             }
           },error=>{
             console.log("error = ", error)
