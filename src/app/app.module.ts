@@ -5,7 +5,6 @@ import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { BodyObservationComponent } from './body-observation/body-observation.component';
-import { DiagnosisComponent } from './diagnosis/diagnosis.component';
 import { CarePlanComponent } from './care-plan/care-plan.component';
 import { BodyObservationDetailDialog } from './body-observation/body-observation-detail.component';
 
@@ -31,19 +30,20 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { SeLineChartComponent } from './se-line-chart/se-line-chart.component';
 import { UserInfoComponent } from './user-info/user-info.component';
 import { AccountManageComponent } from './account-manage/account-manage.component';
+import { ObservationItemComponent } from './observation-item/observation-item.component';
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     BodyObservationDetailDialog,
     BodyObservationComponent,
-    DiagnosisComponent,
     CarePlanComponent,
     LogInComponent,
     SignUpComponent,
     SeLineChartComponent,
     UserInfoComponent,
-    AccountManageComponent
+    AccountManageComponent,
+    ObservationItemComponent
   ],
   imports: [
     BrowserModule,

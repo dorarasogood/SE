@@ -8,9 +8,15 @@ export class BodyObservationService {
 
   constructor(private http: HttpClient) { }
 
-  getAllObservation(successCallback, failureCallback){
-    this.http.get("http://hapi.fhir.org/baseR4/Observation?patient=56899&_pretty=true&_format=json")
-    .subscribe(successCallback, failureCallback);
+  getAllObservation(dateRange, successCallback, failureCallback){
+    console.log("AAA000", dateRange);
+    if(dateRange.start === dateRange.end){
+      this.http.get("http://hapi.fhir.org/baseR4/Observation?patient=56899&date=" + dateRange.start + "&_pretty=true&_format=json")
+      .subscribe(successCallback, failureCallback);
+    }else{      
+      this.http.get("http://hapi.fhir.org/baseR4/Observation?patient=56899&date=>=" + dateRange.start + "&date=<=" + dateRange.end +"&_pretty=true&_format=json")
+      .subscribe(successCallback, failureCallback);
+    }
   }
   deleteObservation(id, successCallback, failureCallback){
     this.http.delete("http://hapi.fhir.org/baseR4/Observation/" + id + "?_pretty=true")
@@ -41,5 +47,9 @@ export class BodyObservationService {
     };
     this.http.put<any>("http://hapi.fhir.org/baseR4/Observation/" + id + "?_format=json&_pretty=true", body, options)
     .subscribe(successCallback, failureCallback);
+  }
+
+  getAllObservationItem(successCallback, failureCallback){
+    
   }
 }

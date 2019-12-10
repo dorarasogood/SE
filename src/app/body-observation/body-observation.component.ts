@@ -35,17 +35,32 @@ export class BodyObservationComponent implements OnInit {
     format: 'YYYY-MM-DD'
   }
 
-  change(event){
-    console.log("AAA000", this.selected.start.format('YYYY-MM-DD'));
-    console.log("AAA000", this.selected.end.format('YYYY-MM-DD'));
+  search(){
+    var dateRange = {
+      start: this.selected.start.format('YYYY-MM-DD'),
+      end: this.selected.end.format('YYYY-MM-DD')
+    }
+    this.bodyObservationService.getAllObservation(dateRange, data => {
+      this.dataSource = new MatTableDataSource<Observation>([]);
+      data["entry"].forEach(element => {
+        this.setObservation(element["resource"]);
+      });
+      this.table.renderRows();
+    }, this.failureCallback);
   }
+
+
 
   private currentSelectedRow = null;
 
   currentCheckedValue = null;
   ngOnInit() {}
   constructor(private ren: Renderer2, public dialog: MatDialog, private bodyObservationService: BodyObservationService) { 
-    bodyObservationService.getAllObservation(data => {
+    var dateRange = {
+      start: this.selected.start.format('YYYY-MM-DD'),
+      end: this.selected.end.format('YYYY-MM-DD')
+    }
+    bodyObservationService.getAllObservation(dateRange, data => {
       this.dataSource = new MatTableDataSource<Observation>([]);
       data["entry"].forEach(element => {
         this.setObservation(element["resource"]);

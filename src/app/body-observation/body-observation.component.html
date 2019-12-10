@@ -7,7 +7,7 @@
   <button mat-raised-button [disabled] = "deleteDisabled" (click)="clickDelete()">刪除</button>
 
   
-  <span style="margin-left: 40%;">
+  <span style="margin-left: 40%">
     Date Range:&nbsp;
     <input type="text" ngxDaterangepickerMd
       startKey="start"
@@ -15,15 +15,11 @@
       [(ngModel)]="selected"
       [locale]="locale" 
       placeholder="Choose date" 
-      (change)="change($event)" showCancel="true"/>
+      showCancel="true" style="width: 164px"/>
   </span>
+
+  <button mat-raised-button (click)="search()" style="margin-left: 1%">搜尋</button>
 </div>
-<!--   
-  <div style="margin-left: 10%;">
-      <!-- <input type="text" ngxDaterangepickerMd [(ngModel)]="selected" placeholder="Choose date" style="margin-right: 10%"/> -->
-      
-<!-- <input type="text" ngxDaterangepickerMd
-[(ngModel)]="selected" placeholder="Choose date" (change)="change($event)"/> -->
 
 
 <br>

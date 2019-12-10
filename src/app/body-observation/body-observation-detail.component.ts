@@ -16,6 +16,10 @@ export interface Food {
     viewValue: string;  
 }
 
+export interface Unit {
+  value: string;
+}
+
 @Component({
     selector: 'body-observation-detail',
     templateUrl: './body-observation-detail.html',
@@ -40,10 +44,10 @@ export class BodyObservationDetailDialog implements OnInit {
         console.log("data = ", this.id);
         if(this.id == null){
           this.title = "Create new observation";
+          this.date = new Date();
         }else{
           this.title = "Edit observation";
           bodyObservationService.getObservation(this.id, result =>{
-            // console.log("aaaa123", data["entry"][0]["resource"]);
             if(result.hasOwnProperty("entry")){
               let data = result["entry"][0]["resource"];
               if(data.hasOwnProperty("valueQuantity")){
