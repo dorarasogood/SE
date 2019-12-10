@@ -50,6 +50,7 @@ export class BodyObservationService {
   }
 
   getAllObservationItem(successCallback, failureCallback){
-    
+    this.http.get("http://hapi.fhir.org/baseR4/Observation?patient=56899&code=unit&_pretty=true")
+      .subscribe(successCallback, failureCallback);
   }
 }

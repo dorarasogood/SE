@@ -7,6 +7,7 @@ import { HomeComponent } from './home/home.component';
 import { BodyObservationComponent } from './body-observation/body-observation.component';
 import { CarePlanComponent } from './care-plan/care-plan.component';
 import { BodyObservationDetailDialog } from './body-observation/body-observation-detail.component';
+import { ObservationItemDetailDialog } from "./observation-item/observation-item-detail.component";
 
 
 import { BrowserModule } from '@angular/platform-browser';
@@ -43,7 +44,8 @@ import { ObservationItemComponent } from './observation-item/observation-item.co
     SeLineChartComponent,
     UserInfoComponent,
     AccountManageComponent,
-    ObservationItemComponent
+    ObservationItemComponent,
+    ObservationItemDetailDialog
   ],
   imports: [
     BrowserModule,
@@ -71,7 +73,8 @@ import { ObservationItemComponent } from './observation-item/observation-item.co
     })
   ],
   entryComponents: [
-    BodyObservationDetailDialog
+    BodyObservationDetailDialog,
+    ObservationItemDetailDialog
   ],
   providers: [],
   bootstrap: [AppComponent]

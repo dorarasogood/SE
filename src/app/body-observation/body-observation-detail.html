@@ -3,6 +3,7 @@
 
   <mat-form-field>
     <!-- <input matInput placeholder="Unit" [(ngModel)]="unit"> -->
+
     <mat-label>檢測項目</mat-label>
     <mat-select>
       <mat-option *ngFor="let food of foods" [(value)]="food.value">
@@ -21,7 +22,6 @@
   <br>
 
   <mat-form-field>
-    <!-- <input matInput placeholder="Unit" [(ngModel)]="unit"> -->
     <mat-label>Unit</mat-label>
     <mat-select>
       <mat-option *ngFor="let food of foods" [(value)]="food.value">
