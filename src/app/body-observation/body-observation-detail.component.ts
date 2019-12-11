@@ -2,20 +2,14 @@ import { Component, OnInit, Inject } from '@angular/core';
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { BodyObservationService } from '../body-observation.service';
 import * as moment from 'moment';
+import item from './item'
 // import {FormControl} from '@angular/forms';
 
 
 export interface DialogData {
-    value: number;
-    unit: string;
-    date: Date; 
+    itemOption: item[];
+    id: number;
 }
-
-export interface Food {
-    value: string;
-    viewValue: string;  
-}
-
 export interface Unit {
   value: string;
 }
@@ -30,35 +24,42 @@ export class BodyObservationDetailDialog implements OnInit {
     unit: string;
     title: string;
     date: Date;
+    selectedType: string;
+    
+    itemOption: item[] = [];
 
-    foods: Food[] = [
-        {value: 'steak-0', viewValue: 'Steak'},
-        {value: 'pizza-1', viewValue: 'Pizza'},
-        {value: 'tacos-2', viewValue: 'Tacos'}
-    ];
-  
     constructor(
       public dialogRef: MatDialogRef<BodyObservationDetailDialog>,
-      @Inject(MAT_DIALOG_DATA) public id: DialogData, 
+      @Inject(MAT_DIALOG_DATA) public dialogdata:DialogData, 
       private bodyObservationService: BodyObservationService) {
-        console.log("data = ", this.id);
-        if(this.id == null){
+        console.log("data = ", this.dialogdata.id);
+        this.itemOption = this.dialogdata.itemOption;
+        if(this.dialogdata.id == null){
           this.title = "Create new observation";
           this.date = new Date();
         }else{
           this.title = "Edit observation";
-          bodyObservationService.getObservation(this.id, result =>{
+          bodyObservationService.getObservation(this.dialogdata.id, result =>{
             if(result.hasOwnProperty("entry")){
               let data = result["entry"][0]["resource"];
               if(data.hasOwnProperty("valueQuantity")){
                 if(data["valueQuantity"].hasOwnProperty("value"))
                   this.value = data["valueQuantity"]["value"];
-                if(data["valueQuantity"].hasOwnProperty("unit"))
-                  this.unit = data["valueQuantity"]["unit"];
+                // if(data["valueQuantity"].hasOwnProperty("unit"))
+                  // this.unit = data["valueQuantity"]["unit"];
               }
+              console.log("item", this.itemOption);
+              // this.selectedType = this.itemOption[this.dialogdata.id].type;
+
               if(data.hasOwnProperty("effectiveDateTime")){
                 this.date = new Date(data["effectiveDateTime"]);
               }
+
+              if(data.hasOwnProperty("derivedFrom")){
+                let itemType = data["derivedFrom"][0]["reference"].split('/')[1];
+                console.log("aaaa008", itemType, this.itemOption);
+                this.selectedType = itemType;
+              } 
             }
           },error=>{
             console.log("error = ", error)
@@ -89,8 +90,8 @@ export class BodyObservationDetailDialog implements OnInit {
         },
         "effectiveDateTime": dateString
       };
-      if (this.id!= undefined){
-        body.id = this.id;
+      if (this.dialogdata.id!= undefined){
+        body.id = this.dialogdata.id;
       }
       return JSON.stringify(body);
     }
@@ -107,7 +108,7 @@ export class BodyObservationDetailDialog implements OnInit {
     onUpdateClick(): void {
       let body = this.httpBody();
       console.log("aaa123", body);
-      this.bodyObservationService.editObservation(this.id, body, data=>{
+      this.bodyObservationService.editObservation(this.dialogdata.id, body, data=>{
         
         this.dialogRef.close(data);
       }, error=>{
@@ -115,5 +116,15 @@ export class BodyObservationDetailDialog implements OnInit {
       });
     }
 
+    getUnit(): string {
+      let unit = '';
+      this.itemOption.forEach((element)=>{
+        if(this.selectedType == element.id){
+          unit = element.unit;
+          this.unit = element.unit;
+        }
+      })
+      return unit;
+    }
     ngOnInit() {}
 }

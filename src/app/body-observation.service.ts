@@ -9,7 +9,6 @@ export class BodyObservationService {
   constructor(private http: HttpClient) { }
 
   getAllObservation(dateRange, successCallback, failureCallback){
-    console.log("AAA000", dateRange);
     if(dateRange.start === dateRange.end){
       this.http.get("http://hapi.fhir.org/baseR4/Observation?patient=56899&date=" + dateRange.start + "&_pretty=true&_format=json")
       .subscribe(successCallback, failureCallback);
@@ -37,7 +36,6 @@ export class BodyObservationService {
     .subscribe(successCallback, failureCallback);
   }
   editObservation(id, body, successCallback, failureCallback){
-    console.log("id = ", id, body);
     let headers = new HttpHeaders({
       "Accept": "application/fhir+json;q=1.0, application/json+fhir;q=0.9",
       "Content-Type": "application/fhir+json; charset=UTF-8"
@@ -53,4 +51,5 @@ export class BodyObservationService {
     this.http.get("http://hapi.fhir.org/baseR4/Observation?patient=56899&code=unit&_pretty=true")
       .subscribe(successCallback, failureCallback);
   }
+
 }

@@ -4,13 +4,14 @@ import {MatDialog} from '@angular/material/dialog';
 import {BodyObservationDetailDialog} from './body-observation-detail.component'
 import { BodyObservationService } from '../body-observation.service';
 import * as moment from 'moment';
+import item from './item';
 export interface Observation {
   // subject: string;
   type: string;
   value: number;
   unit: string;
   id: number;
-  date: string
+  date: string;
 }
 
 @Component({
@@ -27,12 +28,62 @@ export class BodyObservationComponent implements OnInit {
   deleteDisabled = true;
   value: number;
   unit: string;
-
-  selected = {start: moment(), end: moment()};
+  itemOption: item[] = [];
+  selected = {
+    start: moment(),
+    end: moment()
+  };
   locale = {
     applyLabel: 'Apply',
     cancelLabel: 'Cancel',
     format: 'YYYY-MM-DD'
+  }
+
+  
+
+
+  private currentSelectedRow = null;
+
+  currentCheckedValue = null;
+  ngOnInit() {
+    console.log("aaaa006", this.selected);
+    this.bodyObservationService.getAllObservationItem((data)=>{
+      this.getItemSuccess(data, this.bodyObservationService);
+    },this.failureCallback);
+    
+  }
+  constructor(private ren: Renderer2, public dialog: MatDialog, private bodyObservationService: BodyObservationService) { 
+    
+  }
+
+  getItemSuccess(data, bodyObservationService): void{
+    console.log("aaa", data);
+    this.setObservationItem(data["entry"]);
+    var dateRange = {
+      start: moment().format('YYYY-MM-DD'),
+      end: moment().format('YYYY-MM-DD')
+    }
+    bodyObservationService.getAllObservation(dateRange, data => {
+      this.dataSource = new MatTableDataSource<Observation>([]);
+      data["entry"].forEach(element => {
+        this.setObservation(element["resource"]);
+      });
+    }, this.failureCallback);
+  }
+
+  setObservationItem(itemSource):void{
+    itemSource.forEach((item)=>{
+      this.itemOption.push({
+        id: item.resource.id,
+        type: item.resource.code.text,
+        unit: item.resource.valueQuantity.unit
+      });
+    });
+    console.log("aaaa", this.itemOption);
+  }
+
+  private failureCallback(error){
+    console.log("error = ", error);
   }
 
   search(){
@@ -50,30 +101,8 @@ export class BodyObservationComponent implements OnInit {
   }
 
 
-
-  private currentSelectedRow = null;
-
-  currentCheckedValue = null;
-  ngOnInit() {}
-  constructor(private ren: Renderer2, public dialog: MatDialog, private bodyObservationService: BodyObservationService) { 
-    var dateRange = {
-      start: this.selected.start.format('YYYY-MM-DD'),
-      end: this.selected.end.format('YYYY-MM-DD')
-    }
-    bodyObservationService.getAllObservation(dateRange, data => {
-      this.dataSource = new MatTableDataSource<Observation>([]);
-      data["entry"].forEach(element => {
-        this.setObservation(element["resource"]);
-      });
-    }, this.failureCallback);
-  }
-
-  private failureCallback(error){
-    console.log("error = ", error);
-  }
-
   setObservation(observation){
-    // console.log("AAA001", observation);
+    console.log("AAA001", observation);
     let type = "無";
     let value = 0;
     let unit = "無";
@@ -83,12 +112,7 @@ export class BodyObservationComponent implements OnInit {
     if(observation.hasOwnProperty("id")){
       id = observation['id'];
     }
-    if(observation.hasOwnProperty("code") && observation["code"].hasOwnProperty("coding") && observation["code"]["coding"].hasOwnProperty("display")){
-      // if(observation["code"].hasOwnProperty("coding")){
-        // if(observation["code"]["coding"].hasOwnProperty("display"))
-          type = observation["code"]["coding"]["display"];
-      // }
-    }
+    
     if(observation.hasOwnProperty("valueQuantity")){
       if(observation["valueQuantity"].hasOwnProperty("value"))
         value = observation["valueQuantity"]["value"];
@@ -96,8 +120,17 @@ export class BodyObservationComponent implements OnInit {
         unit = observation["valueQuantity"]["unit"];
     }
 
+    if(observation.hasOwnProperty("derivedFrom")){
+      let itemType = observation["derivedFrom"][0]["reference"].split('/')[1];
+      this.itemOption.forEach((item)=>{
+        if(item.id == itemType){
+          unit = item.unit;
+          type = item.type;
+        }
+      });
+    }    
+
     if(observation.hasOwnProperty("effectiveDateTime")){
-      console.log("1232154 ", observation["effectiveDateTime"]);
       date = observation["effectiveDateTime"];
     }
     let ob = {
@@ -150,7 +183,11 @@ export class BodyObservationComponent implements OnInit {
 
   clickNew(){
     const dialogRef = this.dialog.open(BodyObservationDetailDialog, {
-      width: '500px'
+      width: '500px',
+      data: {
+        id: null,
+        itemOption: this.itemOption
+      }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -158,7 +195,7 @@ export class BodyObservationComponent implements OnInit {
       if(result === undefined) return;
       this.bodyObservationService.getObservation(result, 
         (data)=>{
-          this.setObservation(data);
+          this.setObservation(data.entry[0].resource);
           this.table.renderRows();
         }, this.failureCallback);
     });
@@ -167,7 +204,10 @@ export class BodyObservationComponent implements OnInit {
   clickEdit(){
     const dialogRef = this.dialog.open(BodyObservationDetailDialog, {
       width: '500px',
-      data: this.currentSelectedRow.id
+      data: {
+        id: this.currentSelectedRow.id,
+        itemOption: this.itemOption
+      }
     });
 
     dialogRef.afterClosed().subscribe(result => {

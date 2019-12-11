@@ -2,11 +2,13 @@ import { Component, OnInit, Renderer2, ViewChild } from '@angular/core';
 import {MatTableDataSource, MatTable} from '@angular/material/table';
 import {MatDialog} from '@angular/material/dialog';
 import { BodyObservationService } from '../body-observation.service';
+import { ObservationItemDetailDialog } from "./observation-item-detail.component";
 
 export interface ObservationItem {
   // subject: string;
   item: string;
   unit: string;
+  id: number;
 }
 
 @Component({
@@ -27,7 +29,7 @@ export class ObservationItemComponent implements OnInit {
   private currentSelectedRow = null;
   currentCheckedValue = null;
 
-  constructor(private ren: Renderer2, private bodyObservationService: BodyObservationService) { 
+  constructor(private ren: Renderer2, public dialog: MatDialog, private bodyObservationService: BodyObservationService) { 
     bodyObservationService.getAllObservationItem( data => {
       this.dataSource = new MatTableDataSource<ObservationItem>([]);
       data["entry"].forEach(element => {
@@ -41,13 +43,14 @@ export class ObservationItemComponent implements OnInit {
   }
 
   setObservationItem(observationItem){
+    console.log("AAA001", observationItem);
     let item = "無";
     let unit = "無";
-    // let id = -1;
+    let id = -1;
 
-    // if(observation.hasOwnProperty("id")){
-    //   id = observation['id'];
-    // }
+    if(observationItem.hasOwnProperty("id")){
+      id = observationItem['id'];
+    }
     if(observationItem.hasOwnProperty("code") && observationItem["code"].hasOwnProperty("text") ){
       // if(observation["code"].hasOwnProperty("coding")){
         // if(observation["code"]["coding"].hasOwnProperty("display"))
@@ -62,6 +65,7 @@ export class ObservationItemComponent implements OnInit {
     let ob = {
       'item': item,
       'unit': unit,
+      'id': id
     }
     this.dataSource.data.push(ob);
   }
@@ -74,15 +78,55 @@ export class ObservationItemComponent implements OnInit {
         this.ren.removeClass(el['_elementRef'].nativeElement, 'cdk-program-focused');
         this.currentCheckedValue = null;
         this.currentSelectedRow = null;
-        // this.enableButtonBySelectData(false);
+        this.enableButtonBySelectData(false);
       } else {
         this.currentCheckedValue = el.value;
         this.currentSelectedRow = row;
         console.log("AAA", this.currentSelectedRow);
-        // this.enableButtonBySelectData(true);
+        this.enableButtonBySelectData(true);
       }
       
     })
+  }
+
+  private enableButtonBySelectData(enable){
+    this.editDisabled = !enable;
+  }
+
+  clickNew(){
+    const dialogRef = this.dialog.open(ObservationItemDetailDialog, {
+      width: '500px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // console.log('The dialog was closed', result);
+      if(result === undefined) return;
+      this.bodyObservationService.getObservation(result, 
+        (data)=>{
+          this.setObservationItem(data.entry[0].resource);
+          this.table.renderRows();
+        }, this.failureCallback);
+    });
+  }
+
+  clickEdit(){
+    const dialogRef = this.dialog.open(ObservationItemDetailDialog, {
+      width: '500px',
+      data: this.currentSelectedRow.id
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result === undefined) return;
+      // console.log('The dialog was closed', result);
+      if(result.hasOwnProperty("valueQuantity") && result["valueQuantity"].hasOwnProperty("unit")){
+        this.currentSelectedRow.unit = result["valueQuantity"]["unit"];
+      }
+      if(result.hasOwnProperty("code") && result["code"].hasOwnProperty("text")){
+        this.currentSelectedRow.item = result["code"]["text"];
+      }
+
+      this.table.renderRows();
+    });
   }
 
   ngOnInit() {

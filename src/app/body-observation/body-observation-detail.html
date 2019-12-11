@@ -2,12 +2,11 @@
 <div mat-dialog-content>
 
   <mat-form-field>
-    <!-- <input matInput placeholder="Unit" [(ngModel)]="unit"> -->
 
     <mat-label>檢測項目</mat-label>
-    <mat-select>
-      <mat-option *ngFor="let food of foods" [(value)]="food.value">
-        {{food.viewValue}}
+    <mat-select [(value)] = "selectedType">
+      <mat-option *ngFor="let item of itemOption" [(value)]="item.id">
+        {{item.type}}
       </mat-option>
     </mat-select>
   </mat-form-field>
@@ -18,18 +17,12 @@
   <mat-form-field>
     <input matInput placeholder="Value" [(ngModel)]="value">
   </mat-form-field>
-
   <br>
 
   <mat-form-field>
-    <mat-label>Unit</mat-label>
-    <mat-select>
-      <mat-option *ngFor="let food of foods" [(value)]="food.value">
-        {{food.viewValue}}
-      </mat-option>
-    </mat-select>
+    <input matInput placeholder="Unit" [value]="getUnit()" disabled ="true" style="color: black;">
   </mat-form-field>
-
+  
   <br>
 
   <mat-form-field>
