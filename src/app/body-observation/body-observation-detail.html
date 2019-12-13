@@ -34,6 +34,6 @@
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()">No Thanks</button>
-  <button mat-button (click)="onOkClick()" *ngIf="!id" cdkFocusInitial>Ok</button>
-  <button mat-button (click)="onUpdateClick()" *ngIf="id" cdkFocusInitial>Update</button>
+  <button mat-button (click)="onOkClick()" *ngIf="!dialogdata.id" cdkFocusInitial>Ok</button>
+  <button mat-button (click)="onUpdateClick()" *ngIf="dialogdata.id" cdkFocusInitial>Update</button>
 </div>

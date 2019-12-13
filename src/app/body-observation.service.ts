@@ -6,16 +6,27 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class BodyObservationService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+  }
 
-  getAllObservation(dateRange, successCallback, failureCallback){
+
+
+  getAllObservation(dateRange, itemType, successCallback, failureCallback){
+    console.log("aaa", itemType);
+    let url = "http://hapi.fhir.org/baseR4/Observation?";
+    url = url + "patient=56899";
     if(dateRange.start === dateRange.end){
-      this.http.get("http://hapi.fhir.org/baseR4/Observation?patient=56899&date=" + dateRange.start + "&_pretty=true&_format=json")
-      .subscribe(successCallback, failureCallback);
+      url = url + "&date=" + dateRange.start;
     }else{      
-      this.http.get("http://hapi.fhir.org/baseR4/Observation?patient=56899&date=>=" + dateRange.start + "&date=<=" + dateRange.end +"&_pretty=true&_format=json")
-      .subscribe(successCallback, failureCallback);
+      url = url + "&date=>=" + dateRange.start + "&date=<=" + dateRange.end;
     }
+
+    if(itemType != "all")
+      url = url + "&derived-from=" + itemType;
+
+    url = url +"&_pretty=true&_format=json";
+
+    this.http.get(url).subscribe(successCallback, failureCallback);
   }
   deleteObservation(id, successCallback, failureCallback){
     this.http.delete("http://hapi.fhir.org/baseR4/Observation/" + id + "?_pretty=true")

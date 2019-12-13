@@ -57,7 +57,6 @@ export class BodyObservationDetailDialog implements OnInit {
 
               if(data.hasOwnProperty("derivedFrom")){
                 let itemType = data["derivedFrom"][0]["reference"].split('/')[1];
-                console.log("aaaa008", itemType, this.itemOption);
                 this.selectedType = itemType;
               } 
             }
@@ -85,9 +84,13 @@ export class BodyObservationDetailDialog implements OnInit {
           "reference": "Patient/56899"
         },
         "valueQuantity": {
-          "value": this.value,
-          "unit": this.unit
+          "value": this.value
         },
+        "derivedFrom": [
+          {
+            "reference": "Observation/" + this.selectedType
+          }
+        ],
         "effectiveDateTime": dateString
       };
       if (this.dialogdata.id!= undefined){
@@ -107,7 +110,6 @@ export class BodyObservationDetailDialog implements OnInit {
     }
     onUpdateClick(): void {
       let body = this.httpBody();
-      console.log("aaa123", body);
       this.bodyObservationService.editObservation(this.dialogdata.id, body, data=>{
         
         this.dialogRef.close(data);

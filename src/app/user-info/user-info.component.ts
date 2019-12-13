@@ -65,7 +65,6 @@ export class UserInfoComponent implements OnInit {
 
     let body = this.httpBody();
     this.authService.saveUserInfo(56899, body, (data)=>{
-      console.log("aaa003", body);
     }, ()=>{});
   }
 

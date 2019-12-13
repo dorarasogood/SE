@@ -26,6 +26,7 @@ export class BodyObservationComponent implements OnInit {
   editDisabled = true;
   readDisabled = true;
   deleteDisabled = true;
+  selectType = "all";
   value: number;
   unit: string;
   itemOption: item[] = [];
@@ -46,7 +47,6 @@ export class BodyObservationComponent implements OnInit {
 
   currentCheckedValue = null;
   ngOnInit() {
-    console.log("aaaa006", this.selected);
     this.bodyObservationService.getAllObservationItem((data)=>{
       this.getItemSuccess(data, this.bodyObservationService);
     },this.failureCallback);
@@ -57,17 +57,18 @@ export class BodyObservationComponent implements OnInit {
   }
 
   getItemSuccess(data, bodyObservationService): void{
-    console.log("aaa", data);
     this.setObservationItem(data["entry"]);
     var dateRange = {
       start: moment().format('YYYY-MM-DD'),
       end: moment().format('YYYY-MM-DD')
     }
-    bodyObservationService.getAllObservation(dateRange, data => {
+    bodyObservationService.getAllObservation(dateRange, this.selectType, data => {
       this.dataSource = new MatTableDataSource<Observation>([]);
-      data["entry"].forEach(element => {
-        this.setObservation(element["resource"]);
-      });
+      if(data.hasOwnProperty("entry")){
+        data["entry"].forEach(element => {
+          this.setObservation(element["resource"]);
+        });
+      }
     }, this.failureCallback);
   }
 
@@ -79,7 +80,6 @@ export class BodyObservationComponent implements OnInit {
         unit: item.resource.valueQuantity.unit
       });
     });
-    console.log("aaaa", this.itemOption);
   }
 
   private failureCallback(error){
@@ -91,18 +91,19 @@ export class BodyObservationComponent implements OnInit {
       start: this.selected.start.format('YYYY-MM-DD'),
       end: this.selected.end.format('YYYY-MM-DD')
     }
-    this.bodyObservationService.getAllObservation(dateRange, data => {
+    this.bodyObservationService.getAllObservation(dateRange, this.selectType, data => {
       this.dataSource = new MatTableDataSource<Observation>([]);
-      data["entry"].forEach(element => {
-        this.setObservation(element["resource"]);
-      });
+      if(data.hasOwnProperty("entry")){
+        data["entry"].forEach(element => {
+          this.setObservation(element["resource"]);
+        });
+      }
       this.table.renderRows();
     }, this.failureCallback);
   }
 
 
   setObservation(observation){
-    console.log("AAA001", observation);
     let type = "無";
     let value = 0;
     let unit = "無";
@@ -156,7 +157,6 @@ export class BodyObservationComponent implements OnInit {
       } else {
         this.currentCheckedValue = el.value;
         this.currentSelectedRow = row;
-        console.log("AAA", this.currentSelectedRow);
         this.enableButtonBySelectData(true);
       }
       
@@ -224,6 +224,16 @@ export class BodyObservationComponent implements OnInit {
 
           if(result.hasOwnProperty("effectiveDateTime")){
             this.currentSelectedRow.date = result["effectiveDateTime"];
+          }
+
+          if(result.hasOwnProperty("derivedFrom")){
+            let itemType = result["derivedFrom"][0]["reference"].split('/')[1];
+            this.itemOption.forEach((item)=>{
+              if(item.id == itemType){
+                this.currentSelectedRow.unit = item.unit;
+                this.currentSelectedRow.type = item.type;
+              }
+            });
           }
 
           this.table.renderRows();

@@ -32,9 +32,11 @@ export class ObservationItemComponent implements OnInit {
   constructor(private ren: Renderer2, public dialog: MatDialog, private bodyObservationService: BodyObservationService) { 
     bodyObservationService.getAllObservationItem( data => {
       this.dataSource = new MatTableDataSource<ObservationItem>([]);
-      data["entry"].forEach(element => {
-        this.setObservationItem(element["resource"]);
-      });
+      if(data.hasOwnProperty("entry")){
+        data["entry"].forEach(element => {
+          this.setObservationItem(element["resource"]);
+        });
+      }
     }, this.failureCallback);
   }
 
@@ -43,7 +45,6 @@ export class ObservationItemComponent implements OnInit {
   }
 
   setObservationItem(observationItem){
-    console.log("AAA001", observationItem);
     let item = "無";
     let unit = "無";
     let id = -1;
@@ -82,7 +83,6 @@ export class ObservationItemComponent implements OnInit {
       } else {
         this.currentCheckedValue = el.value;
         this.currentSelectedRow = row;
-        console.log("AAA", this.currentSelectedRow);
         this.enableButtonBySelectData(true);
       }
       

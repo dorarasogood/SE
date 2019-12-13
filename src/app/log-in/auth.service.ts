@@ -45,7 +45,6 @@ export class AuthService {
       "userName": userName,
       "password": password
     }
-    console.log("aaapost",obj);
     this.http.post<any>("http://127.0.0.1:3000/user/create", obj, options)
     .subscribe(successCallback, failureCallback);
   }

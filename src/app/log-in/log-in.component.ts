@@ -26,7 +26,6 @@ export class LogInComponent {
 
   login(loginForm: NgForm): void {
     if (loginForm && loginForm.valid) {
-      console.log("AAA000");
       const userName = loginForm.form.value.userName;
       const password = loginForm.form.value.password;
       this.authService.login(userName, password,(data)=>{
