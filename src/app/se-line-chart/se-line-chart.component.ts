@@ -10,7 +10,10 @@ import { Color, Label } from 'ng2-charts';
 export class SeLineChartComponent implements OnInit {
 
   public lineChartData: ChartDataSets[] = [
-    { data: [70, 69, 70, 69, 70, 69, 60], label: 'Body Observation' },
+    { 
+      data: [70, 69, 70, 69, 70, 69, 60, 80], 
+      label: 'Body Observation' 
+    }
   ];
   public lineChartLabels: Label[] = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
   public lineChartOptions: ChartOptions = {
@@ -19,7 +22,7 @@ export class SeLineChartComponent implements OnInit {
   public lineChartColors: Color[] = [
     {
       borderColor: 'black',
-      backgroundColor: 'rgba(255,0,0,0.3)',
+      backgroundColor: 'rgba(0,0,0,0)',
     },
   ];
   public lineChartLegend = true;

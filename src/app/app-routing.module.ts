@@ -5,10 +5,12 @@ import { LogInComponent } from './log-in/log-in.component'
 import { BodyObservationComponent } from './body-observation/body-observation.component'
 import { CarePlanComponent } from "./care-plan/care-plan.component";
 import { SignUpComponent } from './sign-up/sign-up.component';
-import { SeLineChartComponent } from "./se-line-chart/se-line-chart.component";
+// import { SeLineChartComponent } from "./se-line-chart/se-line-chart.component";
+import { LineChartComponent } from"./line-chart/line-chart.component";
 import { UserInfoComponent } from "./user-info/user-info.component";
 import { AccountManageComponent } from "./account-manage/account-manage.component";
 import { ObservationItemComponent } from "./observation-item/observation-item.component";
+import { from } from 'rxjs';
 const routes: Routes = [
   {
     path: 'home',
@@ -28,7 +30,7 @@ const routes: Routes = [
       },
       {
         path: 'chart',
-        component: SeLineChartComponent
+        component: LineChartComponent
       }
     ],
     data: { preload: true }

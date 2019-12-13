@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { ChartsModule } from "ng2-charts";
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 
 import { AppComponent } from './app.component';
@@ -32,6 +34,7 @@ import { SeLineChartComponent } from './se-line-chart/se-line-chart.component';
 import { UserInfoComponent } from './user-info/user-info.component';
 import { AccountManageComponent } from './account-manage/account-manage.component';
 import { ObservationItemComponent } from './observation-item/observation-item.component';
+import { LineChartComponent } from './line-chart/line-chart.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -45,7 +48,8 @@ import { ObservationItemComponent } from './observation-item/observation-item.co
     UserInfoComponent,
     AccountManageComponent,
     ObservationItemComponent,
-    ObservationItemDetailDialog
+    ObservationItemDetailDialog,
+    LineChartComponent
   ],
   imports: [
     BrowserModule,
@@ -70,7 +74,8 @@ import { ObservationItemComponent } from './observation-item/observation-item.co
       // separator: '-',
       cancelLabel: 'Cancel',
       applyLabel: 'Apply'
-    })
+    }),
+    NgxChartsModule
   ],
   entryComponents: [
     BodyObservationDetailDialog,

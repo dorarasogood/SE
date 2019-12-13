@@ -1,0 +1,46 @@
+<div style="float: left; width: 30%;">
+    <div style="margin-left: 30%;margin-right: -88%; margin-top: 20%;">
+        <span>Date Range:</span>
+        <br>
+        <span>
+            <input type="text" ngxDaterangepickerMd
+            startKey="start"
+            endKey="end"
+            [(ngModel)]="selected"
+            [locale]="locale" 
+            placeholder="Choose date" 
+            showCancel="true" class="datepicker">
+        </span>
+    </div>
+    <br>
+    <mat-form-field style="margin-left: 30%;margin-right: -88%;">
+
+    <mat-label>檢測項目</mat-label>
+    <mat-select [(value)] = "selectedType">
+      <!-- <mat-option *ngFor="let item of itemOption" [(value)]="item.id">
+        {{item.type}}
+      </mat-option> -->
+    </mat-select>
+  </mat-form-field>
+  
+  
+</div>
+<div style="float: left; margin-top: 3%;">
+    <ngx-charts-line-chart
+        [view]="view"
+        [scheme]="colorScheme"
+        [legend]="legend"
+        [showXAxisLabel]="showXAxisLabel"
+        [showYAxisLabel]="showYAxisLabel"
+        [xAxis]="xAxis"
+        [yAxis]="yAxis"
+        [xAxisLabel]="xAxisLabel"
+        [yAxisLabel]="yAxisLabel"
+        [timeline]="timeline"
+        [xScaleMin] = "xMin"
+        [results]="multi"
+        (select)="onSelect($event)"
+        (activate)="onActivate($event)"
+        (deactivate)="onDeactivate($event)">
+    </ngx-charts-line-chart>
+</div>
