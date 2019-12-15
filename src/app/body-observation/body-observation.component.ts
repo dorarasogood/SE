@@ -40,9 +40,6 @@ export class BodyObservationComponent implements OnInit {
     format: 'YYYY-MM-DD'
   }
 
-  
-
-
   private currentSelectedRow = null;
 
   currentCheckedValue = null;
@@ -57,13 +54,14 @@ export class BodyObservationComponent implements OnInit {
   }
 
   getItemSuccess(data, bodyObservationService): void{
-    this.setObservationItem(data["entry"]);
+    if(data.hasOwnProperty("entry")){
+      this.setObservationItem(data["entry"]);
+    }
     var dateRange = {
       start: moment().format('YYYY-MM-DD'),
       end: moment().format('YYYY-MM-DD')
     }
     bodyObservationService.getAllObservation(dateRange, this.selectType, data => {
-      console.log("aaa002",data);
       this.dataSource = new MatTableDataSource<Observation>([]);
       if(data.hasOwnProperty("entry")){
         data["entry"].forEach(element => {

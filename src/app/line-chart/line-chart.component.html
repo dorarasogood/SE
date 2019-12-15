@@ -17,13 +17,15 @@
 
     <mat-label>檢測項目</mat-label>
     <mat-select [(value)] = "selectedType">
-      <!-- <mat-option *ngFor="let item of itemOption" [(value)]="item.id">
+      <mat-option *ngFor="let item of itemOption" [(value)]="item.id">
         {{item.type}}
-      </mat-option> -->
+      </mat-option>
     </mat-select>
-  </mat-form-field>
-  
-  
+    </mat-form-field>
+    <br>
+    <button mat-raised-button 
+            style="margin-left: 30%;margin-right: -88%; margin-top: 3%;" 
+            [disabled] = "generateDisabled()">產生圖表</button>
 </div>
 <div style="float: left; margin-top: 3%;">
     <ngx-charts-line-chart

@@ -16,8 +16,8 @@ export class LogInComponent {
               private router: Router) {
   }
 
-  cancel(): void {
-    // this.router.navigate(['welcome']);
+  cancel(loginForm: NgForm): void {
+    loginForm.reset();
   }
 
   signUpClick(): void{
@@ -32,12 +32,6 @@ export class LogInComponent {
         console.log("callback", data);
         this.router.navigate(['/home']);
       }, ()=>{console.log("error")});
-
-      // if (this.authService.redirectUrl) {
-      //   this.router.navigateByUrl(this.authService.redirectUrl);
-      // } else {
-      //   
-      // }
     } else {
       this.errorMessage = 'Please enter a user name and password.';
     }
