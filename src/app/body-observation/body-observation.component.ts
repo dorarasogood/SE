@@ -63,6 +63,7 @@ export class BodyObservationComponent implements OnInit {
       end: moment().format('YYYY-MM-DD')
     }
     bodyObservationService.getAllObservation(dateRange, this.selectType, data => {
+      console.log("aaa002",data);
       this.dataSource = new MatTableDataSource<Observation>([]);
       if(data.hasOwnProperty("entry")){
         data["entry"].forEach(element => {

@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER, Injector } from '@angular/core';
 import { ChartsModule } from "ng2-charts";
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 
@@ -35,6 +35,8 @@ import { UserInfoComponent } from './user-info/user-info.component';
 import { AccountManageComponent } from './account-manage/account-manage.component';
 import { ObservationItemComponent } from './observation-item/observation-item.component';
 import { LineChartComponent } from './line-chart/line-chart.component';
+import { StartupService, startupServiceFactory } from './start-up.service'
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -81,7 +83,15 @@ import { LineChartComponent } from './line-chart/line-chart.component';
     BodyObservationDetailDialog,
     ObservationItemDetailDialog
   ],
-  providers: [],
+  providers: [
+    StartupService,
+    {
+        provide: APP_INITIALIZER,
+        useFactory: startupServiceFactory,
+        deps: [StartupService, Injector],
+        multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

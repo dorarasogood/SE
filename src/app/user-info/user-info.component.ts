@@ -31,17 +31,7 @@ export class UserInfoComponent implements OnInit {
   pageTitle = 'Manage User Info';
 
   constructor(private authService: AuthService) {
-    
-    // this.username = "Jeff";
-    // this.password = "abc123";
-    // this.authService.getPatientId(this.username, this.password,(data)=>{
-    //   this.patientId = data.patient_id;
-    // },()=>{
-    //   console.log("error");
-    // })
-    // console.log("patientId: ", this.patientId);
-    let tempId = 56899;
-    this.authService.manageUserInfo(tempId, (data)=>{
+    this.authService.getUserInfo((data)=>{
       this.userInfo.name = data.name[0].given[0];
       this.userInfo.email = data.telecom[0].value;
       this.userInfo.gender = data.gender;
@@ -64,7 +54,7 @@ export class UserInfoComponent implements OnInit {
     this.editMode = false;
 
     let body = this.httpBody();
-    this.authService.saveUserInfo(56899, body, (data)=>{
+    this.authService.saveUserInfo(body, (data)=>{
     }, ()=>{});
   }
 
@@ -74,7 +64,7 @@ export class UserInfoComponent implements OnInit {
     }
     var body:iBody ={
       "resourceType": "Patient",
-      "id": "56899",
+      "id": this.authService.getPatientId(),
       "name": [
         {
           "given": [

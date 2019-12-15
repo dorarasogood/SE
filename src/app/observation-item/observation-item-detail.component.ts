@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { BodyObservationService } from '../body-observation.service';
+import { ObservationItemDTO } from './observation-item-DTO'
 
 export interface DialogData {
     item: string;
@@ -44,26 +45,7 @@ export class ObservationItemDetailDialog implements OnInit {
         }
 
     private httpBody(): string {
-      interface iBody {
-        [key: string]: any
-      }
-      var body:iBody ={
-        "resourceType": "Observation",
-        "code": {
-          "coding": [
-            {
-              "code": "unit"
-            }
-          ],
-          "text": this.item
-        },
-        "subject": {
-          "reference": "Patient/56899"
-        },
-        "valueQuantity": {
-          "unit": this.unit
-        }
-      };
+      var body = new ObservationItemDTO(this.item, this.unit).getBody();
       if (this.id!= undefined){
         body.id = this.id;
       }
@@ -77,7 +59,6 @@ export class ObservationItemDetailDialog implements OnInit {
     onOkClick(): void {
       let body = this.httpBody();
       this.bodyObservationService.createObservation(body, data=>{
-          console.log("data", data);
           this.dialogRef.close(data.id);
       }, error=>{
         console.log("error = ", error);

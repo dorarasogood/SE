@@ -7,13 +7,16 @@ import { User } from './user';
   providedIn: 'root',
 })
 export class AuthService {
-  currentUser: User | null;
-  redirectUrl: string;
 
   constructor(private http: HttpClient) { }
 
   isLoggedIn(): boolean {
-    return !!this.currentUser;
+    let user = localStorage.getItem("User");
+    if(user){
+      return true;
+    }else{
+      return false;
+    }
   }
 
   login(userName: string, password: string, successCallback, failureCallback): void {
@@ -29,7 +32,10 @@ export class AuthService {
       "password": password
     }
     this.http.post<any>("http://127.0.0.1:3000/users", obj, options)
-    .subscribe(successCallback, failureCallback);
+    .subscribe((data)=>{
+      localStorage.setItem("User", JSON.stringify(data));
+      successCallback(data);
+    }, failureCallback);
   }
 
   signUp(name: string, userName: string, password: string, successCallback, failureCallback): void{
@@ -49,22 +55,9 @@ export class AuthService {
     .subscribe(successCallback, failureCallback);
   }
 
-  getPatientId(userName:string, password: string, successCallback, failureCallback): void{
-    let headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-    });
-    let options = {
-      headers
-    };
-    var obj = {
-      "userName": userName,
-      "password": password
-    }
-    // console.log("obj.userName:", obj.userName);
-    // console.log("obj.password:", obj.password);
-
-    this.http.post<any>("http://127.0.0.1:3000/users", obj, options)
-    .subscribe(successCallback, failureCallback);
+  getPatientId(): string{
+    let user = localStorage.getItem("User");
+    return JSON.parse(user).patient_id;
   }
 
   manageAccount(userName: string, password: string, successCallback, failureCallback): void{
@@ -82,24 +75,23 @@ export class AuthService {
     .subscribe(successCallback, failureCallback);
   }
 
-  manageUserInfo(patientId: number, successCallback, failureCallback): void{
+  getUserInfo(successCallback, failureCallback): void{
+    let patientId = this.getPatientId();
     let headers = new HttpHeaders({
       'Content-Type': 'application/fhir+json;charset=utf-8',
     });
     let options = {
       headers
     };
-    this.http.get<any>("http://hapi.fhir.org/baseR4/Patient/" + patientId + "?_pretty=true&_format=json", options)
-    .subscribe(successCallback, failureCallback);
+    this.http.get<any>("http://hapi.fhir.org/baseR4/Patient?_id=" + patientId + "&_pretty=true&_format=json", options)
+    .subscribe((data)=>{
+      console.log("aaa", data);
+      successCallback(data.entry[0].resource);
+    }, failureCallback);
   }
 
-  saveUserInfo(patientId: number, body, successCallback, failureCallback): void{
-    // let headers = new HttpHeaders({
-    //   'Content-Type': 'application/fhir+json;charset=utf-8',
-    // });
-    // let options = {
-    //   headers
-    // };
+  saveUserInfo(body, successCallback, failureCallback): void{
+    let patientId = this.getPatientId();
     let headers = new HttpHeaders({
       "Accept": "application/fhir+json;q=1.0, application/json+fhir;q=0.9",
       "Content-Type": "application/fhir+json; charset=UTF-8"
@@ -114,7 +106,7 @@ export class AuthService {
 
 
   logout(): void {
-    this.currentUser = null;
+    localStorage.removeItem("User");
   }
 
   changePassword(userName, oldPassword, newPassword, successCallback, failureCallback): void{

@@ -4,7 +4,7 @@ import { BodyObservationService } from '../body-observation.service';
 import * as moment from 'moment';
 import item from './item'
 // import {FormControl} from '@angular/forms';
-
+import { ObservationDTO } from './observation-DTO'
 
 export interface DialogData {
     itemOption: item[];
@@ -70,33 +70,15 @@ export class BodyObservationDetailDialog implements OnInit {
       this.dialogRef.close();
     }
     
-    private httpBody(): string {
-      interface iBody {
-        [key: string]: any
-      }
-
+    private httpBody(){
       let dateString = moment(this.date).format("YYYY-MM-DD");
 
-      
-      var body:iBody ={
-        "resourceType": "Observation",
-        "subject": {
-          "reference": "Patient/56899"
-        },
-        "valueQuantity": {
-          "value": this.value
-        },
-        "derivedFrom": [
-          {
-            "reference": "Observation/" + this.selectedType
-          }
-        ],
-        "effectiveDateTime": dateString
-      };
+      var body = new ObservationDTO(this.value, this.selectedType, dateString).getBody();
+
       if (this.dialogdata.id!= undefined){
         body.id = this.dialogdata.id;
       }
-      return JSON.stringify(body);
+      return body;
     }
 
     onOkClick(): void {
