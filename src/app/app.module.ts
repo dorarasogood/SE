@@ -35,7 +35,8 @@ import { UserInfoComponent } from './user-info/user-info.component';
 import { AccountManageComponent } from './account-manage/account-manage.component';
 import { ObservationItemComponent } from './observation-item/observation-item.component';
 import { LineChartComponent } from './line-chart/line-chart.component';
-import { StartupService, startupServiceFactory } from './start-up.service'
+import { StartupService, startupServiceFactory } from './start-up.service';
+import { NotificationComponent } from './notification/notification.component'
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import { StartupService, startupServiceFactory } from './start-up.service'
     AccountManageComponent,
     ObservationItemComponent,
     ObservationItemDetailDialog,
-    LineChartComponent
+    LineChartComponent,
+    NotificationComponent
   ],
   imports: [
     BrowserModule,

@@ -10,6 +10,7 @@ import { LineChartComponent } from"./line-chart/line-chart.component";
 import { UserInfoComponent } from "./user-info/user-info.component";
 import { AccountManageComponent } from "./account-manage/account-manage.component";
 import { ObservationItemComponent } from "./observation-item/observation-item.component";
+import { NotificationComponent } from "./notification/notification.component"
 import { from } from 'rxjs';
 const routes: Routes = [
   {
@@ -31,6 +32,10 @@ const routes: Routes = [
       {
         path: 'chart',
         component: LineChartComponent
+      },
+      {
+        path: '',
+        component: NotificationComponent
       }
     ],
     data: { preload: true }
