@@ -10,6 +10,7 @@ import { BodyObservationComponent } from './body-observation/body-observation.co
 import { CarePlanComponent } from './care-plan/care-plan.component';
 import { BodyObservationDetailDialog } from './body-observation/body-observation-detail.component';
 import { ObservationItemDetailDialog } from "./observation-item/observation-item-detail.component";
+import { CarePlanDetailDialog } from "./care-plan/care-plan-detail.component";
 
 
 import { BrowserModule } from '@angular/platform-browser';
@@ -53,7 +54,8 @@ import { NotificationComponent } from './notification/notification.component'
     ObservationItemComponent,
     ObservationItemDetailDialog,
     LineChartComponent,
-    NotificationComponent
+    NotificationComponent,
+    CarePlanDetailDialog
   ],
   imports: [
     BrowserModule,
@@ -83,7 +85,8 @@ import { NotificationComponent } from './notification/notification.component'
   ],
   entryComponents: [
     BodyObservationDetailDialog,
-    ObservationItemDetailDialog
+    ObservationItemDetailDialog,
+    CarePlanDetailDialog
   ],
   providers: [
     StartupService,
