@@ -44,12 +44,12 @@ export class ObservationItemDetailDialog implements OnInit {
           }
         }
 
-    private httpBody(): string {
+    private httpBody(){
       var body = new ObservationItemDTO(this.item, this.unit).getBody();
       if (this.id!= undefined){
         body.id = this.id;
       }
-      return JSON.stringify(body);
+      return body;
     }
     
     onNoClick(): void {
