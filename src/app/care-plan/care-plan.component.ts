@@ -46,13 +46,13 @@ export class CarePlanComponent implements OnInit {
     if(data.hasOwnProperty("entry")){
       this.setObservationItem(data["entry"]);
     }
-    carePlanService.getAllCarePlan(this.selectType, data => {
+    carePlanService.getAllCarePlan(data => {
       this.dataSource = new MatTableDataSource<CarePlan>([]);
-      // if(data.hasOwnProperty("entry")){
+      if(data.hasOwnProperty("entry")){
         data["entry"].forEach(element => {
           this.setCarePlan(element["resource"]);
         });
-      // }
+      }
     }, this.failureCallback);
   }
 

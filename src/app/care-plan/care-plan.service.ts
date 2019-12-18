@@ -11,7 +11,8 @@ export class CarePlanService {
   constructor(private http: HttpClient, private authService: AuthService) {
   }
 
-  getAllCarePlan(itemType, successCallback, failureCallback){
+  getAllCarePlan(successCallback, failureCallback){
+    console.log("aaa002");
     //http://hapi.fhir.org/baseR4/Goal/93124?_format=json&_pretty=true
     let url = "http://hapi.fhir.org/baseR4/Goal?patient=";
     url = url + this.authService.getPatientId();

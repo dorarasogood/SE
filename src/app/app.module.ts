@@ -37,7 +37,8 @@ import { AccountManageComponent } from './account-manage/account-manage.componen
 import { ObservationItemComponent } from './observation-item/observation-item.component';
 import { LineChartComponent } from './line-chart/line-chart.component';
 import { StartupService, startupServiceFactory } from './start-up.service';
-import { NotificationComponent } from './notification/notification.component'
+import { NotificationComponent } from './notification/notification.component';
+import {MatCardModule} from '@angular/material/card';
 
 @NgModule({
   declarations: [
@@ -76,6 +77,7 @@ import { NotificationComponent } from './notification/notification.component'
     MatListModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatCardModule,
     NgxDaterangepickerMd.forRoot({
       // separator: '-',
       cancelLabel: 'Cancel',

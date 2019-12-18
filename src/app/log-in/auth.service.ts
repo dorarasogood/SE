@@ -85,7 +85,6 @@ export class AuthService {
     };
     this.http.get<any>("http://hapi.fhir.org/baseR4/Patient?_id=" + patientId + "&_pretty=true&_format=json", options)
     .subscribe((data)=>{
-      console.log("aaa", data);
       successCallback(data.entry[0].resource);
     }, failureCallback);
   }

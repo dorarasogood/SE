@@ -63,7 +63,6 @@ export class LineChartComponent {
   }
 
   generateDisabled(): boolean{
-    console.log("aaa", this.selected, this.selectedType);
     if(this.selected !=null && this.selectedType != ""){
       
       return false;
