@@ -15,6 +15,7 @@ describe('HomeComponent', () => {
     authService = new AuthService(http)
     spyObj = spyOn(authService, 'getUserInfo');
     component = new HomeComponent(router, authService);
+    component.ngOnInit();
   });
 
   it('should create', () => {
@@ -24,4 +25,12 @@ describe('HomeComponent', () => {
   it('should get user info', () => {
     expect(spyObj).toHaveBeenCalledTimes(1);
   });
+  it('should get pageTitle', () => {
+    expect(component.pageTitle).toEqual("Health Tracking System");
+  });
+
+  it('should login', () => {
+    expect(component.isLoggedIn).toEqual(true);
+  });
+
 });
