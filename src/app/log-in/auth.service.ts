@@ -60,6 +60,11 @@ export class AuthService {
     return JSON.parse(user).patient_id;
   }
 
+  getUserName(): string{
+    let user = localStorage.getItem("User");
+    return JSON.parse(user).userName;
+  }
+
   manageAccount(userName: string, password: string, successCallback, failureCallback): void{
     let headers = new HttpHeaders({
       'Content-Type': 'application/json',

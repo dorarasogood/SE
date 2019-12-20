@@ -12,8 +12,6 @@ export class CarePlanService {
   }
 
   getAllCarePlan(successCallback, failureCallback){
-    console.log("aaa002");
-    //http://hapi.fhir.org/baseR4/Goal/93124?_format=json&_pretty=true
     let url = "http://hapi.fhir.org/baseR4/Goal?patient=";
     url = url + this.authService.getPatientId();
 
@@ -54,18 +52,11 @@ export class CarePlanService {
     let options = {
       headers
     };
-    // body.subject = {
-    //   "reference": "Patient/" + this.authService.getPatientId()
-    // };
+    body.subject = {
+      "reference": "Patient/" + this.authService.getPatientId()
+    };
     body = JSON.stringify(body);
     this.http.put<any>("http://hapi.fhir.org/baseR4/Goal/" + id + "?_format=json&_pretty=true", body, options)
     .subscribe(successCallback, failureCallback);
-  }
-
-  getAllCarePlanItem(successCallback, failureCallback){
-    let urlPrefix = "http://hapi.fhir.org/baseR4/Observation?";
-    let url = urlPrefix + "patient=" + this.authService.getPatientId() + "&code=unit&_pretty=true";
-    this.http.get(url)
-      .subscribe(successCallback, failureCallback);
   }
 }

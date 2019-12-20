@@ -13,21 +13,26 @@
         </span>
     </div>
     <br>
+
     <mat-form-field style="margin-left: 30%;margin-right: -88%;">
 
-    <mat-label>檢測項目</mat-label>
-    <mat-select [(value)] = "selectedType">
-      <mat-option *ngFor="let item of itemOption" [(value)]="item.id">
-        {{item.type}}
-      </mat-option>
-    </mat-select>
+        <mat-label>照護計畫</mat-label>
+        <mat-select [(value)] = "selectedPlan">
+          <mat-option *ngFor="let plan of planOption" [(value)]="plan.observetype" (onSelectionChange) = "selectedPlanChange($event)">
+            {{plan.text}}
+          </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <br>
+    <mat-form-field style="margin-left: 30%;margin-right: -88%;">
+        <input matInput placeholder="檢驗項目" [value]="getSelectedType()" disabled ="true" style="color: black;">
     </mat-form-field>
     <br>
     <button mat-raised-button 
             style="margin-left: 30%;margin-right: -88%; margin-top: 3%;" 
-            [disabled] = "generateDisabled()">產生圖表</button>
+            [disabled] = "generateDisabled()" (click) = generateClick()>產生圖表</button>
 </div>
-<div style="float: left; margin-top: 3%;">
+<div *ngIf = "chartGenerated"  style="float: left; margin-top: 3%;">
     <ngx-charts-line-chart
         [view]="view"
         [scheme]="colorScheme"

@@ -21,7 +21,7 @@ export class AccountManageComponent implements OnInit {
   
   constructor(private authService: AuthService,
               private router: Router,private formBuilder: FormBuilder) {
-                this.username = "Jeff";
+                this.username = authService.getUserName();
   }
 
   cancel(): void {

@@ -70,7 +70,6 @@ export class NotificationComponent implements OnInit {
   }
 
   getObservationSuccess(data,itemName, planName, messages){
-    console.log("aaa005", data);
     if(!data.hasOwnProperty("entry")){
       console.log("test");
       messages.push({

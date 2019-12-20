@@ -20,7 +20,7 @@ export interface Observation {
   styleUrls: ['./body-observation.component.css']
 })
 export class BodyObservationComponent implements OnInit {
-  @ViewChild(MatTable, {static:false}) table : MatTable<Observation>;
+  @ViewChild(MatTable, {static:false}) table;
   displayedColumns: string[] = ['select', 'type', 'value', 'unit', 'date'];
   dataSource;
   editDisabled = true;
