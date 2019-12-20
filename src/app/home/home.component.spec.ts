@@ -11,11 +11,22 @@ describe('HomeComponent', () => {
   let http: HttpClient;
   let authService: AuthService;
   let spyObj;
+  let data = {
+    name: [{
+      given: [
+        'Jeff'
+      ]
+    }]
+  };
   beforeEach(() => {
-    authService = new AuthService(http)
-    spyObj = spyOn(authService, 'getUserInfo');
+    authService = new AuthService(http);
+    spyObj = spyOn(authService, 'getUserInfo').and.callFake((successCallback, failureCallback)=>{
+      successCallback(data);
+      failureCallback();
+    });
     component = new HomeComponent(router, authService);
     component.ngOnInit();
+    
   });
 
   it('should create', () => {
@@ -26,7 +37,7 @@ describe('HomeComponent', () => {
     expect(spyObj).toHaveBeenCalledTimes(1);
   });
   it('should get pageTitle', () => {
-    expect(component.pageTitle).toEqual("Health Tracking System");
+    expect(component.pageTitle).toEqual('Health Tracking System');
   });
 
   it('should login', () => {

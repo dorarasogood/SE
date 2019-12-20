@@ -25,12 +25,22 @@ describe('LogInComponent', () => {
     expect(component).toBeTruthy();
   });
   it('should cancel', ()=> {
-    let spyObj = spyOn(loginForm, 'reset');
+    const spyObj = spyOn(loginForm, 'reset');
     component.cancel(loginForm);
     expect(spyObj).toHaveBeenCalledTimes(1);
   })
-  it('shoulde login', () => {
-    let spyObj = spyOn(authService, 'login');
+  it('should login', () => {
+    const spyObj = spyOn(authService, 'login').and.callFake((username, password, successCallback, failureCallback) => {
+      failureCallback();
+    });
+    component.login(loginForm);
+    expect(spyObj).toHaveBeenCalledTimes(1);
+  });
+
+  it('should login failed', () => {
+    const spyObj = spyOn(authService, 'login').and.callFake((username, password, successCallback, failureCallback) => {
+      failureCallback();
+    });
     component.login(loginForm);
     expect(spyObj).toHaveBeenCalledTimes(1);
   });

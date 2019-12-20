@@ -23,7 +23,7 @@ describe('SignUpComponent', () => {
   });
 
   it('component should do ngOninit', () => {
-    let spyObj  = spyOn(component,'ngOnInit').and.callThrough();
+    const spyObj  = spyOn(component, 'ngOnInit').and.callThrough();
     component.ngOnInit();
     expect(spyObj).toHaveBeenCalledTimes(1);
   });
@@ -33,11 +33,11 @@ describe('SignUpComponent', () => {
     component.registerForm = {};
     component.registerForm.invalid = false;
     component.registerForm.value = {};
-    component.registerForm.value.name = "Jeff";
-    component.registerForm.value.userName = "Jeff";
-    component.registerForm.value.password = "abc123";
+    component.registerForm.value.name = 'Jeff';
+    component.registerForm.value.userName = 'Jeff';
+    component.registerForm.value.password = 'abc123';
     component.loading = true;
-    let spyObj = spyOn(authService, 'signUp');
+    const spyObj = spyOn(authService, 'signUp');
     component.onSubmit();
     // expect(component.registerForm).toBe(1);
     // component.registerFor`m.invalid = false;
@@ -51,18 +51,18 @@ describe('SignUpComponent', () => {
     component.registerForm = {};
     component.registerForm.invalid = false;
     component.registerForm.value = {};
-    component.registerForm.value.name = "Jeff";
-    component.registerForm.value.userName = "Jeff";
-    component.registerForm.value.password = "abc123";
+    component.registerForm.value.name = 'Jeff';
+    component.registerForm.value.userName = 'Jeff';
+    component.registerForm.value.password = 'abc123';
     component.loading = true;
-    let spyObj = spyOn(authService, 'signUp').and.callFake((name, username, password, successCallback, failureCallback)=>{
-      failureCallback("test");
+    const spyObj = spyOn(authService, 'signUp').and.callFake((name, username, password, successCallback, failureCallback)=>{
+      failureCallback('test');
     });
     component.onSubmit();
     expect(spyObj).toHaveBeenCalledTimes(1);
-    expect(component.registerForm.value.name).toBe("");
-    expect(component.registerForm.value.userName).toBe("");
-    expect(component.registerForm.value.password).toBe("");
+    expect(component.registerForm.value.name).toBe('');
+    expect(component.registerForm.value.userName).toBe('');
+    expect(component.registerForm.value.password).toBe('');
   });
 
   // it('component should get data', () => {
