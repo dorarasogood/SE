@@ -1,7 +1,8 @@
+
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BodyObservationComponent } from './body-observation.component';
-import { Renderer2 } from '@angular/core';
+import { Renderer2, RendererFactory2, RendererStyleFlags2 } from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import { BodyObservationService } from '../body-observation.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -13,6 +14,14 @@ import {MatRadioModule} from '@angular/material/radio';
 import { ChangeDetectorRef, ElementRef, IterableDiffers } from '@angular/core';
 import { Directionality } from '@angular/cdk/bidi';
 import { Platform } from '@angular/cdk/platform';
+
+//--dialog
+import { Overlay, OverlayContainer, ScrollStrategy } from '@angular/cdk/overlay';
+import { Location } from '@angular/common';
+import { InjectionToken, Injector, OnDestroy, TemplateRef } from '@angular/core';
+import { MatDialogConfig } from '../../../node_modules/@angular/material/dialog/typings/dialog-config';
+
+import { Observable, observable, Observer } from 'rxjs';
 
 var allObservationData = {
   "resourceType": "Bundle",
@@ -271,6 +280,52 @@ var observationData = {
   ]
 }
 
+var observationData2 = {
+  "resourceType": "Observation",
+  "id": "249507",
+  "meta": {
+    "versionId": "4",
+    "lastUpdated": "2019-12-11T11:12:44.415+00:00",
+    "source": "#y56PixQN57GdNBjd"
+  },
+  "code": {
+    "coding": [
+      {
+        "code": "unit"
+      }
+    ],
+    "text": "Weight"
+  },
+  "subject": {
+    "reference": "Patient/56899"
+  },
+  "valueQuantity": {
+    "unit": "kg"
+  }
+};
+
+var observationData3 = {
+  "resourceType": "Observation",
+  "id": "249507",
+  "meta": {
+    "versionId": "2",
+    "lastUpdated": "2019-12-13T07:30:50.677+00:00",
+    "source": "#Bmwc9xAzqELWHLwK"
+  },
+  "subject": {
+    "reference": "Patient/56899"
+  },
+  "effectiveDateTime": "2019-12-11",
+  "valueQuantity": {
+    "value": 20
+  },
+  "derivedFrom": [
+    {
+      "reference": "Observation/250083"
+    }
+  ]
+};
+
 export class MockAuthService extends AuthService{
   getPatientId(): string{
     return '56899';
@@ -279,7 +334,6 @@ export class MockAuthService extends AuthService{
 
 export class MockBodyObservationService extends BodyObservationService{
   getAllObservationItem(successCallback, failureCallback){
-    let data = {};
     successCallback(allObservationItemData);
     // failureCallback(data);
   }
@@ -289,69 +343,134 @@ export class MockBodyObservationService extends BodyObservationService{
     successCallback(allObservationData);
     failureCallback(allObservationData);
   }
-}
 
-export interface Observation {
-  // subject: string;
-  type: string;
-  value: number;
-  unit: string;
-  id: number;
-  date: string;
+  deleteObservation(id, successCallback, failureCallback){
+    let data = {};
+    successCallback(data);
+  }
+
+  getObservation(id, successCallback, failureCallback){
+    successCallback(allObservationData);
+  }
 }
 
 export class MockTable{
   renderRows(){}
 }
 
+export class MockRenderer2 extends Renderer2{
+  readonly data;
+  destroy(): void{}
+  createElement(name: string, namespace?: string | null): any{}
+  createComment(value: string): any{}
+  createText(value: string): any{}
+  appendChild(parent: any, newChild: any): void{}
+  insertBefore(parent: any, newChild: any, refChild: any): void{}
+  removeChild(parent: any, oldChild: any, isHostElement?: boolean): void{}
+  selectRootElement(selectorOrNode: string | any, preserveContent?: boolean): any{}
+  parentNode(node: any): any{}
+  nextSibling(node: any): any{}
+  setAttribute(el: any, name: string, value: string, namespace?: string | null): void{}
+  removeAttribute(el: any, name: string, namespace?: string | null): void{}
+  addClass(el: any, name: string): void{}
+  removeClass(el: any, name: string): void{}
+  setStyle(el: any, style: string, value: any, flags?: RendererStyleFlags2): void{}
+  removeStyle(el: any, style: string, flags?: RendererStyleFlags2): void{}
+  setProperty(el: any, name: string, value: any): void{}
+  setValue(node: any, value: string): void{}
+  listen(target: 'window' | 'document' | 'body' | any, eventName: string, callback: (event: any) => boolean | void): any{}
+}
+
+export class MockSubscribe{
+  subscribe():any {}
+}
+
+export class MockDialogRef{
+  mockSubscribe = new MockSubscribe();
+  afterClosed(): any{
+    return this.mockSubscribe;
+  }
+  
+  // data = new Observable();
+  // data: Observable<any>;
+  // afterClosed(): Observable<any>{
+  //   return this.data;
+  // }
+}
+
+export class MockDialog extends MatDialog{
+  dialogRef = new MockDialogRef()
+  open(): any{
+    return this.dialogRef;
+  }
+}
+
 describe('BodyObservationComponent', () => {
-  it('should create', () => {
-    let ren: Renderer2;
-    let dialog: MatDialog;
-    let http: HttpClient;
-    let mockAuthService = new MockAuthService(http);
-    let mockBodyObservationService = new MockBodyObservationService(http, mockAuthService);
-    let bodyObservationComponent = new BodyObservationComponent(ren, dialog, mockBodyObservationService);
-    // expect(testBody.forTest()).toEqual(1);
-    expect(bodyObservationComponent.editDisabled).toEqual(true);
+  let _overlay: Overlay;
+  let _injector: Injector;
+  let _location: Location;
+  let _defaultOptions: MatDialogConfig;
+  let scrollStrategy: any;
+  let _parentDialog: MatDialog;
+  let _overlayContainer: OverlayContainer;
+  
+  let http: HttpClient;
 
-    let observationData2 = {
-      "resourceType": "Observation",
-      "id": "249507",
-      "meta": {
-        "versionId": "4",
-        "lastUpdated": "2019-12-11T11:12:44.415+00:00",
-        "source": "#y56PixQN57GdNBjd"
-      },
-      "code": {
-        "coding": [
-          {
-            "code": "unit"
-          }
-        ],
-        "text": "Weight"
-      },
-      "subject": {
-        "reference": "Patient/56899"
-      },
-      "valueQuantity": {
-        "unit": "kg"
-      }
-    };
+  let dialog;
+  let ren2;
+  let mockAuthService;
+  let mockBodyObservationService;
+  let bodyObservationComponent;
 
-    expect(bodyObservationComponent.dataSource).toEqual(undefined);
+  let radio = {
+    "value": 65,
+    "_elementRef": {
+      "nativeElement":{}
+    }
+  }
+  let row = {
+    "type": "Pressure",
+    "value": 65,
+    "unit": "kpa",
+    "id": "59198",
+    "date": "2019-12-26"
+  }
+
+  beforeEach(() => {
+    dialog = new MockDialog(_overlay, _injector, _location, _defaultOptions, scrollStrategy, _parentDialog, _overlayContainer);
+    ren2 = new MockRenderer2();
+    mockAuthService = new MockAuthService(http);
+    mockBodyObservationService = new MockBodyObservationService(http, mockAuthService);
+    bodyObservationComponent = new BodyObservationComponent(ren2, dialog, mockBodyObservationService);
+
+    bodyObservationComponent.table = new MockTable();
+
     bodyObservationComponent.dataSource = {};
     bodyObservationComponent.dataSource.data = [];
-    
-    console.log("bbb000", bodyObservationComponent.dataSource.data);
+  });
+
+  it('test_ngOnInit', ()=>{
+    expect(bodyObservationComponent.dataSource.data.length).toEqual(0);
+    bodyObservationComponent.ngOnInit();
+    expect(bodyObservationComponent.dataSource.data.length).toEqual(2);
+  });
+
+  it('test_getItemSuccess', ()=>{
+    expect(bodyObservationComponent.dataSource.data.length).toEqual(0);
     bodyObservationComponent.getItemSuccess(allObservationItemData, mockBodyObservationService);
-    console.log("bbb001", bodyObservationComponent.dataSource.data);
     expect(bodyObservationComponent.dataSource.data[0].unit).toEqual("kpa");
     expect(bodyObservationComponent.dataSource.data.length).toEqual(2);
+  });
 
+  it('test_setObservation', ()=>{
+    bodyObservationComponent.getItemSuccess(allObservationItemData, mockBodyObservationService);
     bodyObservationComponent.setObservation(observationData);
     expect(bodyObservationComponent.dataSource.data[2].unit).toEqual("lb");
-    
+  });
+
+  it('test_search', ()=>{
+    bodyObservationComponent.getItemSuccess(allObservationItemData, mockBodyObservationService);
+
     bodyObservationComponent.selected.start.year(2019);
     bodyObservationComponent.selected.start.month(11);
     bodyObservationComponent.selected.start.date(2);
@@ -359,7 +478,7 @@ describe('BodyObservationComponent', () => {
     bodyObservationComponent.selected.end.month(0);
     bodyObservationComponent.selected.end.date(30);
 
-    expect(bodyObservationComponent.dataSource.data.length).toEqual(3);
+    // expect(bodyObservationComponent.dataSource.data.length).toEqual(3);
 
     // let _differs: IterableDiffers;
     // let _changeDetectorRef: ChangeDetectorRef;
@@ -369,43 +488,49 @@ describe('BodyObservationComponent', () => {
     // let _document: any;
     // let _platform: Platform;
     // bodyObservationComponent.table = new MockTable(_differs, _changeDetectorRef, _elementRef, role, _dir, _document, _platform);
-    bodyObservationComponent.table = new MockTable();
+
     // let spy: any;
     // spy = spyOn(bodyObservationComponent.table, 'renderRows');
 
-
-    //--------------need fixxxxxxxxxxxxxxxxxxxxxxxxx!!
     bodyObservationComponent.search();
-    // expect(bodyObservationComponent.dataSource.data.length).toEqual(2);
+    expect(bodyObservationComponent.dataSource.data.length).toEqual(2);
     // let radio: MatRadioModule;
-    let radio = {
-      "value": 65
-    }
-    let row = {
-      "type": "Pressure",
-      "value": 65,
-      "unit": "kpa",
-      "id": "59198",
-      "date": "2019-12-26"
-    }
-    // let spy: any;
-    // spy = spyOn(ren, 'removeClass');
+  });
+
+  it('test_checkState', ()=>{
     bodyObservationComponent.currentCheckedValue = 65;
-    console.log("bbb002", radio);
     bodyObservationComponent.checkState(radio, row);
+    expect(bodyObservationComponent.currentCheckedValue).toEqual(65);
+    
     bodyObservationComponent.currentCheckedValue = 64;
-    console.log("bbb002", radio);
     bodyObservationComponent.checkState(radio, row);
+    expect(bodyObservationComponent.currentCheckedValue).toEqual(64);
+  });
 
-    bodyObservationComponent.currentSelectedRow;
-    // bodyObservationComponent.clickDelete();
+  it('test_clickDelete', ()=>{
+    bodyObservationComponent.getItemSuccess(allObservationItemData, mockBodyObservationService);
+    bodyObservationComponent.currentSelectedRow = row;
+    bodyObservationComponent.clickDelete();
+    expect(bodyObservationComponent.currentSelectedRow).toEqual(null);
+  });
 
-    bodyObservationComponent.ngOnInit();
-
+  it('test_clickNew', ()=>{
+    bodyObservationComponent.getItemSuccess(allObservationItemData, mockBodyObservationService);
+    expect(bodyObservationComponent.dataSource.data.length).toEqual(2);
+    bodyObservationComponent.clickNew();
+    bodyObservationComponent.afterClickNew(251484);
+    expect(bodyObservationComponent.dataSource.data.length).toEqual(3);
 
   });
+
+  it('test_clickEdit', ()=>{
+    bodyObservationComponent.getItemSuccess(allObservationItemData, mockBodyObservationService);
+    bodyObservationComponent.currentSelectedRow = row;
+    expect(bodyObservationComponent.currentSelectedRow.value).toEqual(65);
+    bodyObservationComponent.clickEdit();
+    bodyObservationComponent.afterClickEdit(observationData3);
+    expect(bodyObservationComponent.currentSelectedRow.value).toEqual(20);
+  });
+
   
 });
-
-
-//file:///C:/Users/AngularJS/Desktop/SE/coverage/abc123/index.html

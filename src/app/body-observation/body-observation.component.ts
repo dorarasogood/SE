@@ -40,7 +40,7 @@ export class BodyObservationComponent implements OnInit {
     format: 'YYYY-MM-DD'
   }
 
-  private currentSelectedRow = null;
+  currentSelectedRow = null;
 
   currentCheckedValue = null;
   ngOnInit() {
@@ -190,14 +190,24 @@ export class BodyObservationComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      // console.log('The dialog was closed', result);
-      if(result === undefined) return;
+      // console.log('ClickNew dialog was closed', result);
+      this.afterClickNew(result);
+      // if(result === undefined) return;
+      // this.bodyObservationService.getObservation(result, 
+      //   (data)=>{
+      //     this.setObservation(data.entry[0].resource);
+      //     this.table.renderRows();
+      //   }, this.failureCallback);
+    });
+  }
+
+  afterClickNew(result){
+    if(result === undefined) return;
       this.bodyObservationService.getObservation(result, 
         (data)=>{
           this.setObservation(data.entry[0].resource);
           this.table.renderRows();
         }, this.failureCallback);
-    });
   }
 
   clickEdit(){
@@ -210,34 +220,60 @@ export class BodyObservationComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      // if(result === undefined) return;
+      // console.log('ClickEdit dialog was closed', result);
+
+      //     if(result.hasOwnProperty("valueQuantity")){
+      //       if(result["valueQuantity"].hasOwnProperty("value"))
+      //         this.currentSelectedRow.value = result["valueQuantity"]["value"];
+      //       if(result["valueQuantity"].hasOwnProperty("unit"))
+      //         this.currentSelectedRow.unit = result["valueQuantity"]["unit"];
+      //     }
+
+      //     if(result.hasOwnProperty("effectiveDateTime")){
+      //       this.currentSelectedRow.date = result["effectiveDateTime"];
+      //     }
+
+      //     if(result.hasOwnProperty("derivedFrom")){
+      //       let itemType = result["derivedFrom"][0]["reference"].split('/')[1];
+      //       this.itemOption.forEach((item)=>{
+      //         if(item.id == itemType){
+      //           this.currentSelectedRow.unit = item.unit;
+      //           this.currentSelectedRow.type = item.type;
+      //         }
+      //       });
+      //     }
+
+      //     this.table.renderRows();
+      this.afterClickEdit(result);
+      });
+  }
+
+  afterClickEdit(result){
       if(result === undefined) return;
       // console.log('The dialog was closed', result);
       
-        
-          if(result.hasOwnProperty("valueQuantity")){
-            if(result["valueQuantity"].hasOwnProperty("value"))
-              this.currentSelectedRow.value = result["valueQuantity"]["value"];
-            if(result["valueQuantity"].hasOwnProperty("unit"))
-              this.currentSelectedRow.unit = result["valueQuantity"]["unit"];
-          }
+      if(result.hasOwnProperty("valueQuantity")){
+        if(result["valueQuantity"].hasOwnProperty("value"))
+          this.currentSelectedRow.value = result["valueQuantity"]["value"];
+        if(result["valueQuantity"].hasOwnProperty("unit"))
+          this.currentSelectedRow.unit = result["valueQuantity"]["unit"];
+      }
 
-          if(result.hasOwnProperty("effectiveDateTime")){
-            this.currentSelectedRow.date = result["effectiveDateTime"];
-          }
+      if(result.hasOwnProperty("effectiveDateTime")){
+        this.currentSelectedRow.date = result["effectiveDateTime"];
+      }
 
-          if(result.hasOwnProperty("derivedFrom")){
-            let itemType = result["derivedFrom"][0]["reference"].split('/')[1];
-            this.itemOption.forEach((item)=>{
-              if(item.id == itemType){
-                this.currentSelectedRow.unit = item.unit;
-                this.currentSelectedRow.type = item.type;
-              }
-            });
+      if(result.hasOwnProperty("derivedFrom")){
+        let itemType = result["derivedFrom"][0]["reference"].split('/')[1];
+        this.itemOption.forEach((item)=>{
+          if(item.id == itemType){
+            this.currentSelectedRow.unit = item.unit;
+            this.currentSelectedRow.type = item.type;
           }
+        });
+      }
 
-          this.table.renderRows();
-      
-      
-      });
+      this.table.renderRows();
   }
 }
