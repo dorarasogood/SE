@@ -36,7 +36,7 @@ export class UserInfoComponent implements OnInit {
       this.userInfo.email = data.telecom[0].value;
       this.userInfo.gender = data.gender;
       this.userInfo.birthDate = data.birthDate;
-    }, ()=>{});
+    }, () => {});
   }
 
   update(): void {
@@ -47,15 +47,15 @@ export class UserInfoComponent implements OnInit {
   cancel(): void {
     this.editMode = false;
     this.userInfo = this.originUserInfo;
-    console.log("userInfor:", this.userInfo);
+    console.log('userInfor:', this.userInfo);
   }
 
   save(): void {
     this.editMode = false;
 
-    let body = this.httpBody();
+    const body = this.httpBody();
     this.authService.saveUserInfo(body, (data)=>{
-    }, ()=>{});
+    }, () => {});
   }
 
   private httpBody(): string {
