@@ -24,14 +24,13 @@ describe('LogInComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-  it('should cancel', ()=> {
+  it('should cancel', () => {
     const spyObj = spyOn(loginForm, 'reset');
     component.cancel(loginForm);
     expect(spyObj).toHaveBeenCalledTimes(1);
   })
   it('should login', () => {
     const spyObj = spyOn(authService, 'login').and.callFake((username, password, successCallback, failureCallback) => {
-      failureCallback();
     });
     component.login(loginForm);
     expect(spyObj).toHaveBeenCalledTimes(1);

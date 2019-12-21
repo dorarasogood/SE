@@ -15,7 +15,7 @@ export class AccountManageComponent implements OnInit {
   repeatNewPassword: string;
   loading = false;
   submitted = false;
-  accountManageForm: FormGroup;
+  accountManageForm;
 
   errorMessage: string;
   
@@ -38,20 +38,20 @@ export class AccountManageComponent implements OnInit {
 
     this.loading = true;
     console.log(this.accountManageForm.value);
-      const oldPassword = this.accountManageForm.value.oldPassword;
-      const newPassword = this.accountManageForm.value.newPassword;
-      const repeatNewPassword = this.accountManageForm.value.repeatNewPassword;
-      if(newPassword == repeatNewPassword){
-        this.authService.changePassword(this.username, oldPassword, newPassword, (data)=>{
-          console.log(data);
-          this.router.navigate(['/home']);
-        },(error)=>{
-          console.log(error);
-          this.accountManageForm.value.oldPassword = "";
-          this.accountManageForm.value.newPassword = "";
-          this.accountManageForm.value.repeatNewPassword = "";
-        })
-      }
+    const oldPassword = this.accountManageForm.value.oldPassword;
+    const newPassword = this.accountManageForm.value.newPassword;
+    const repeatNewPassword = this.accountManageForm.value.repeatNewPassword;
+    if(newPassword === repeatNewPassword){
+      this.authService.changePassword(this.username, oldPassword, newPassword, (data)=>{
+        console.log(data);
+        this.router.navigate(['/home']);
+      }, (error) => {
+        console.log(error);
+        this.accountManageForm.value.oldPassword = '';
+        this.accountManageForm.value.newPassword = '';
+        this.accountManageForm.value.repeatNewPassword = '';
+      })
+    }
   }
 
   get f() { return this.accountManageForm.controls; }

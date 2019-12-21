@@ -34,18 +34,18 @@ export class SignUpComponent implements OnInit {
 
     this.loading = true;
     console.log(this.registerForm.value);
-      const name = this.registerForm.value.name;
-      const userName = this.registerForm.value.userName;
-      const password = this.registerForm.value.password;
-      this.authService.signUp(name, userName, password, (data)=>{
-        console.log(data);
-        this.router.navigate(['/log-in']);
-      },(error)=>{
-        console.log(error);
-        this.registerForm.value.name = "";
-        this.registerForm.value.userName = "";
-        this.registerForm.value.password = "";
-      })
+    const name = this.registerForm.value.name;
+    const userName = this.registerForm.value.userName;
+    const password = this.registerForm.value.password;
+    this.authService.signUp(name, userName, password, (data)=>{
+      console.log(data);
+      this.router.navigate(['/log-in']);
+    }, (error) => {
+      console.log(error);
+      this.registerForm.value.name = '';
+      this.registerForm.value.userName = '';
+      this.registerForm.value.password = '';
+    })
   }
 
   get f() { return this.registerForm.controls; }
