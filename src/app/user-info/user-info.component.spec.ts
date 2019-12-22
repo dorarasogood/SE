@@ -1,36 +1,78 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { AuthService } from '../log-in/auth.service';
-import { HttpClient } from '@angular/common/http';
 import { UserInfoComponent } from './user-info.component';
+import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material';
+import {MatSelectModule} from '@angular/material/select';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material/core';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import {MatListModule} from '@angular/material/list';
+
 describe('UserInfoComponent', () => {
-  let http: HttpClient;
   let authService: AuthService;
+  let router: Router;
   let component: UserInfoComponent;
-  let data;
-  let userInfoForm: NgForm;
+  let fixture: ComponentFixture<UserInfoComponent>;
+  let userInfoForm;
   let validators: any[];
   let asyncValidators: any[];
+
+  const data = {
+    name: [{
+      given: [
+        'Jeff'
+      ]
+    }],
+    telecom: [{
+      value: '091234567'
+    }],
+    gender: 'male',
+    birthDate: '1996-11-13'
+  };
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ UserInfoComponent ],
+      imports: [
+        MatFormFieldModule,
+        MatSelectModule,
+        MatDatepickerModule,
+        HttpClientTestingModule,
+        MatNativeDateModule,
+        MatMomentDateModule,
+        MatInputModule,
+        BrowserAnimationsModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatListModule,
+        RouterTestingModule.withRoutes([]),
+      ],
+      providers: [
+        // { provide: Router, useValue: routerMock },
+        AuthService
+      ]
+    })
+    .compileComponents();
+  }));
+
   beforeEach(() => {
-    data = {
-      name: [{
-        given: [
-          'Jeff'
-        ]
-      }],
-      telecom: [{
-        value: '091234567'
-      }],
-      gender: 'male',
-      birthDate: '1996-11-13'
-    }
-    authService = new AuthService(http);
+    authService = TestBed.get(AuthService);
+    router = TestBed.get(Router);
     const spyObj = spyOn(authService, 'getUserInfo').and.callFake((successCallback, failureCallback) => {
       successCallback(data);
       failureCallback();
     });
-    component =  new UserInfoComponent(authService);
+    fixture = TestBed.createComponent(UserInfoComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
     component.ngOnInit();
   });
 
@@ -72,7 +114,7 @@ describe('UserInfoComponent', () => {
   it('component shoud manageAccount', () => {
     userInfoForm = new NgForm(validators, asyncValidators);
     const spyObj = spyOn(authService, 'manageAccount').and.callFake((username, password, successCallback, failureCallback) => {
-      successCallback();
+      successCallback('test');
       failureCallback('error');
     });
     component.manageAccount(userInfoForm);

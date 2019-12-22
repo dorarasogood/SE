@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { AuthService } from "../log-in/auth.service";
+import { AuthService } from '../log-in/auth.service';
 
 @Component({
   selector: 'app-user-info',
@@ -16,22 +16,22 @@ export class UserInfoComponent implements OnInit {
   editMode = false;
 
   userInfo = {
-    "name": "",
-    "email": "",
-    "gender": "",
-    "birthDate": ""
+    name: '',
+    email: '',
+    gender: '',
+    birthDate: ''
   }
 
   originUserInfo = {
-    "name": "",
-    "email": "",
-    "gender": "",
-    "birthDate": ""
+    name: '',
+    email: '',
+    gender: '',
+    birthDate: ''
   };
   pageTitle = 'Manage User Info';
 
   constructor(private authService: AuthService) {
-    this.authService.getUserInfo((data)=>{
+    this.authService.getUserInfo((data) => {
       this.userInfo.name = data.name[0].given[0];
       this.userInfo.email = data.telecom[0].value;
       this.userInfo.gender = data.gender;
@@ -47,14 +47,13 @@ export class UserInfoComponent implements OnInit {
   cancel(): void {
     this.editMode = false;
     this.userInfo = this.originUserInfo;
-    console.log('userInfor:', this.userInfo);
   }
 
   save(): void {
     this.editMode = false;
 
     const body = this.httpBody();
-    this.authService.saveUserInfo(body, (data)=>{
+    this.authService.saveUserInfo(body, (data) => {
     }, () => {});
   }
 
@@ -62,24 +61,24 @@ export class UserInfoComponent implements OnInit {
     interface iBody {
       [key: string]: any
     }
-    var body:iBody ={
-      "resourceType": "Patient",
-      "id": this.authService.getPatientId(),
-      "name": [
+    const body: iBody ={
+      resourceType: 'Patient',
+      id: this.authService.getPatientId(),
+      name: [
         {
-          "given": [
+          given: [
             this.userInfo.name
           ]
         }
       ],
-      "telecom": [
+      telecom: [
         {
-          "system": "email",
-          "value": this.userInfo.email
+          system: 'email',
+          value: this.userInfo.email
         }
       ],
-      "gender": this.userInfo.gender,
-      "birthDate": this.userInfo.birthDate
+      gender: this.userInfo.gender,
+      birthDate: this.userInfo.birthDate
     };
     return JSON.stringify(body);
   }
@@ -87,12 +86,12 @@ export class UserInfoComponent implements OnInit {
   ngOnInit() {
   }
 
-  manageAccount(userInfoForm: NgForm): void{
-    this.authService.manageAccount(this.username, userInfoForm.form.value.password,(data)=>{
+  manageAccount(userInfoForm): void {
+    this.authService.manageAccount(this.username, userInfoForm.form.value.password, (data) => {
       console.log(data);
-    },(error)=>{
+    }, (error) => {
       console.log(error);
-    })
+    });
   }
 
 }

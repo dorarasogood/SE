@@ -24,7 +24,7 @@ export class LogInComponent {
     this.router.navigate(['/sign-up']);
   }
 
-  login(loginForm: NgForm): void {
+  login(loginForm): void {
     if (loginForm && loginForm.valid) {
       const userName = loginForm.form.value.userName;
       const password = loginForm.form.value.password;

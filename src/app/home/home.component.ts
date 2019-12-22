@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../log-in/auth.service';
 
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -10,11 +11,11 @@ import { AuthService } from '../log-in/auth.service';
 export class HomeComponent implements OnInit {
   pageTitle: string;
   isLoggedIn = true;
-  name = "";
+  name = '';
 
   constructor(private router: Router, private authService: AuthService) {
-    this.pageTitle = "Health Tracking System";
-    this.authService.getUserInfo((data)=>{
+    this.pageTitle = 'Health Tracking System';
+    this.authService.getUserInfo((data) => {
       this.name = data.name[0].given[0];
     }, ()=>{});
   }
@@ -22,8 +23,7 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
   }
 
-  logOutClick(): void
-  {
+  logOutClick(): void {
     this.authService.logout();
     this.router.navigate(['/']);
   }
