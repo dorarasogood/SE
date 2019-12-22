@@ -30,7 +30,7 @@ export class CarePlanComponent implements OnInit {
   name: string;
   itemOption: item[] = [];
 
-  private currentSelectedRow = null;
+  currentSelectedRow = null;
 
   currentCheckedValue = null;
   constructor(private ren: Renderer2, public dialog: MatDialog, private bodyObservationService: BodyObservationService,
@@ -141,14 +141,24 @@ export class CarePlanComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      // console.log('The dialog was closed', result);
-      if(result === undefined) return;
+      // console.log('clickNew dialog was closed', result);
+      this.afterClickNew(result);
+      // if(result === undefined) return;
+      // this.carePlanService.getCarePlan(result, 
+      //   (data)=>{
+      //     this.setCarePlan(data.entry[0].resource);
+      //     this.table.renderRows();
+      //   }, this.failureCallback);
+    });
+  }
+
+  afterClickNew(result){
+    if(result === undefined) return;
       this.carePlanService.getCarePlan(result, 
         (data)=>{
           this.setCarePlan(data.entry[0].resource);
           this.table.renderRows();
         }, this.failureCallback);
-    });
   }
 
   clickEdit(){
@@ -162,33 +172,50 @@ export class CarePlanComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if(result === undefined) return;
-      // console.log('The dialog was closed', result);
-    
-        // if(result.hasOwnProperty("id")){
-        //   this.id = result['id'];
-        // }
+      // console.log('clickEdit dialog was closed', result);
         
-        if(result.hasOwnProperty("target")){
-          if(result["target"][0].hasOwnProperty("detailQuantity"))
-            if(result["target"][0]["detailQuantity"].hasOwnProperty("value"))
-            this.currentSelectedRow.value = result["target"][0]["detailQuantity"]["value"];
-        }
+      this.afterClickEdit(result);
+        // if(result.hasOwnProperty("target")){
+        //   if(result["target"][0].hasOwnProperty("detailQuantity"))
+        //     if(result["target"][0]["detailQuantity"].hasOwnProperty("value"))
+        //     this.currentSelectedRow.value = result["target"][0]["detailQuantity"]["value"];
+        // }
     
-        if(result.hasOwnProperty("description"))
-          if(result["description"].hasOwnProperty("text"))
-            this.currentSelectedRow.name = result["description"]["text"];
+        // if(result.hasOwnProperty("description"))
+        //   if(result["description"].hasOwnProperty("text"))
+        //     this.currentSelectedRow.name = result["description"]["text"];
           
-        if(result.hasOwnProperty("outcomeReference")){
-          let itemType = result["outcomeReference"][0]["reference"].split('/')[1];
-          this.itemOption.forEach((item)=>{
-            if(item.id == itemType)
-              this.currentSelectedRow.type = item.type;
-          });
-        }
+        // if(result.hasOwnProperty("outcomeReference")){
+        //   let itemType = result["outcomeReference"][0]["reference"].split('/')[1];
+        //   this.itemOption.forEach((item)=>{
+        //     if(item.id == itemType)
+        //       this.currentSelectedRow.type = item.type;
+        //   });
+        // }
         
         this.table.renderRows();
       
       });
+  }
+
+  afterClickEdit(result){
+    if(result.hasOwnProperty("target")){
+      if(result["target"][0].hasOwnProperty("detailQuantity"))
+        if(result["target"][0]["detailQuantity"].hasOwnProperty("value"))
+        this.currentSelectedRow.value = result["target"][0]["detailQuantity"]["value"];
+    }
+
+    if(result.hasOwnProperty("description"))
+      if(result["description"].hasOwnProperty("text"))
+        this.currentSelectedRow.name = result["description"]["text"];
+      
+    if(result.hasOwnProperty("outcomeReference")){
+      let itemType = result["outcomeReference"][0]["reference"].split('/')[1];
+      this.itemOption.forEach((item)=>{
+        if(item.id == itemType)
+          this.currentSelectedRow.type = item.type;
+      });
+    }
   }
 
 }
