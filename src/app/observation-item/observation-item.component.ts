@@ -26,7 +26,7 @@ export class ObservationItemComponent implements OnInit {
   item: string;
   unit: string;
 
-  private currentSelectedRow = null;
+  currentSelectedRow = null;
   currentCheckedValue = null;
 
   constructor(private ren: Renderer2, public dialog: MatDialog, private bodyObservationService: BodyObservationService) { 
@@ -100,13 +100,23 @@ export class ObservationItemComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       // console.log('The dialog was closed', result);
-      if(result === undefined) return;
-      this.bodyObservationService.getObservation(result, 
-        (data)=>{
-          this.setObservationItem(data.entry[0].resource);
-          this.table.renderRows();
-        }, this.failureCallback);
+      this.afterClickNew(result);
+      // if(result === undefined) return;
+      // this.bodyObservationService.getObservation(result, 
+      //   (data)=>{
+      //     this.setObservationItem(data.entry[0].resource);
+      //     this.table.renderRows();
+      //   }, this.failureCallback);
     });
+  }
+
+  afterClickNew(result){
+    if(result === undefined) return;
+    this.bodyObservationService.getObservation(result, 
+      (data)=>{
+        this.setObservationItem(data.entry[0].resource);
+        this.table.renderRows();
+      }, this.failureCallback);
   }
 
   clickEdit(){
@@ -116,17 +126,28 @@ export class ObservationItemComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      // if(result === undefined) return;
+      // // console.log('The dialog was closed', result);
+      // if(result.hasOwnProperty("valueQuantity") && result["valueQuantity"].hasOwnProperty("unit")){
+      //   this.currentSelectedRow.unit = result["valueQuantity"]["unit"];
+      // }
+      // if(result.hasOwnProperty("code") && result["code"].hasOwnProperty("text")){
+      //   this.currentSelectedRow.item = result["code"]["text"];
+      // }
+      this.afterClickEdit(result);
+
+      this.table.renderRows();
+    });
+  }
+
+  afterClickEdit(result){
       if(result === undefined) return;
-      // console.log('The dialog was closed', result);
       if(result.hasOwnProperty("valueQuantity") && result["valueQuantity"].hasOwnProperty("unit")){
         this.currentSelectedRow.unit = result["valueQuantity"]["unit"];
       }
       if(result.hasOwnProperty("code") && result["code"].hasOwnProperty("text")){
         this.currentSelectedRow.item = result["code"]["text"];
       }
-
-      this.table.renderRows();
-    });
   }
 
   ngOnInit() {
