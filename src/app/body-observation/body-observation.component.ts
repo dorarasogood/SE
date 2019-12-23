@@ -116,8 +116,6 @@ export class BodyObservationComponent implements OnInit {
     if(observation.hasOwnProperty("valueQuantity")){
       if(observation["valueQuantity"].hasOwnProperty("value"))
         value = observation["valueQuantity"]["value"];
-      if(observation["valueQuantity"].hasOwnProperty("unit"))
-        unit = observation["valueQuantity"]["unit"];
     }
 
     if(observation.hasOwnProperty("derivedFrom")){
