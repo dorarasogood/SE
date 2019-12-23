@@ -77,7 +77,7 @@ export class LineChartComponent {
       start: this.selected.start.format('YYYY-MM-DD'),
       end: this.selected.end.format('YYYY-MM-DD')
     }
-    this.bodyObservationService.getAllObservation(dateRange, this.selectedPlan,(data)=>{
+    this.bodyObservationService.getAllObservation(dateRange, this.selectedPlan, (data)=>{
       this.generateChart(this.planOption, data);
     }, (err)=>{
       console.log(err);

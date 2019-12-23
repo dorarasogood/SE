@@ -14,10 +14,12 @@ import { NgModule } from '@angular/core';
 
 import { BodyObservationService } from '../body-observation.service';
 import { CarePlanService } from "../care-plan/care-plan.service";
-import { SeLineChartComponent } from "../se-line-chart/se-line-chart.component";
+// import { SeLineChartComponent } from "../se-line-chart/se-line-chart.component";
 
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { Color, Label } from 'ng2-charts';
+
+import * as moment from 'moment';
 
 var allCarePlanData = {
   "resourceType": "Bundle",
@@ -136,24 +138,23 @@ var allCarePlanData = {
   ]
 }
 
-@NgModule({
-  declarations: [SeLineChartComponent],
-  imports: [
-    ChartsModule
-    // FormsModule,
-    // MatFormFieldModule,
-    // MatSelectModule,
-    // BrowserModule
-  ],
-  entryComponents: [
-    SeLineChartComponent,
-  ]
-})
-class TestModuleSeLineChartComponent {}
+const testData = {
+  entry: [{
+    resource: {
+      valueQuantity: '123',
+      effectiveDateTime: '2019-12-01',
+      code: {
+        text: 'test'
+      }
+    }
+  }]
+};
+
 
 describe('LineChartComponent', () => {
   let component: LineChartComponent;
   let fixture: ComponentFixture<LineChartComponent>;
+  let event = {};
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -171,39 +172,103 @@ describe('LineChartComponent', () => {
         HttpClientModule,
         MatInputModule,
         BrowserAnimationsModule,
-        ChartsModule,
-        TestModuleSeLineChartComponent
+        ChartsModule
       ]
     })
     .compileComponents();
   }));
 
-  // beforeEach(() => {
-  //   fixture = TestBed.createComponent(LineChartComponent);
-  //   component = fixture.componentInstance;
-  //   fixture.detectChanges();
-  // });
-
   beforeEach(inject([CarePlanService, BodyObservationService], (carePlanService: CarePlanService, bodyObservationService: BodyObservationService) => {
-    // let spy = spyOn(bodyObservationService, 'getAllObservationItem').and.callFake((successCallback, failureCallback) => {
-    //     successCallback(allObservationItemData);
-    //     failureCallback('test');
-    // });
-    let spy2 = spyOn(carePlanService, 'getAllCarePlan').and.callFake((successCallback, failureCallback) => {
-      successCallback(allCarePlanData);
+    spyOn(carePlanService, 'getAllCarePlan').and.callFake((successCallback, failureCallback) => {
+      successCallback(allCarePlanData, allCarePlanData);
       failureCallback('test');
     });
-    // let spy3 = spyOn(bodyObservationService, 'getAllObservation').and.callFake((dateRange, itemType, successCallback, failureCallback) => {
-    //   successCallback(allObservationData);
-    //   failureCallback('test');
-    // });
 
     fixture = TestBed.createComponent(LineChartComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));
 
-  it('should create', () => {
+  it('component should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('component should select', () => {
+    let data = 'test';
+    component.onSelect(data);
+    expect(data).toBe('test');
+  });
+  it('component should activate', () => {
+    let data = 'test';
+    component.onActivate(data);
+    expect(data).toBe('test');
+  });
+  it('component should deactivate', () => {
+    let data = 'test';
+    component.onDeactivate(data);
+    expect(data).toBe('test');
+  });
+  it('component should click generate', inject([BodyObservationService], (bodyObservationService: BodyObservationService) => {
+    component.selected = {
+      start: moment(),
+      end: moment()
+    }
+    component.selected.start.year(2019);
+    component.selected.start.month(11);
+    component.selected.start.date(2);
+    component.selected.end.year(2019);
+    component.selected.end.month(11);
+    component.selected.end.date(3);
+    component.selectedPlan = "249507";
+    component.planOption.push({
+      text: 'test',
+      observetype: '249508',
+      balance: '123'
+    });
+    let spyObj = spyOn(bodyObservationService, 'getAllObservation').and.callFake((dateRange, itemType, successCallback, failureCallback) => {
+      successCallback(testData);
+      failureCallback('test');
+    });
+    component.generateClick();
+    expect(spyObj).toHaveBeenCalledTimes(1);
+  }));
+  it('component should selectedPlanChange', inject([BodyObservationService], (bodyObservationService: BodyObservationService) => {
+    let event = {
+      source: {
+        value: '123'
+      }
+    };
+    
+    let spyObj =  spyOn(bodyObservationService, 'getObservation').and.callFake((value, successCallback, faillureCallback) => {
+      successCallback(testData);
+      faillureCallback('test');
+    });
+    component.selectedPlanChange(event);
+    expect(spyObj).toHaveBeenCalledTimes(1);
+  }));
+
+  it('component should selectedPlanChange failed', inject([BodyObservationService], (bodyObservationService: BodyObservationService) => {
+    let event = {
+      source: {
+        value: '123'
+      }
+    };
+  
+    let spyObj = spyOn(bodyObservationService, 'getObservation').and.callFake((value, successCallback, failureCallback) => {
+      successCallback({});
+      failureCallback();
+    });
+    component.selectedPlanChange(event);
+    expect(spyObj).toHaveBeenCalledTimes(1);
+  }));
+
+  it('component should disable to generate', () => {
+    component.selected = {
+      start: moment(),
+      end: moment()
+    }
+    component.selectedType = '249507';
+    expect(component.generateDisabled()).toBe(false);
+  })
+
 });
