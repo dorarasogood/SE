@@ -402,4 +402,12 @@ describe('NotificationComponent', () => {
     expect(component).toBeTruthy();
     expect(component.messages.length).toEqual(0);
   });
+
+  it('component should get observation failed', () => {
+    let testData = {};
+    let itemName = 'test';
+    let planName = 'test';
+    let messages = [];
+    component.getObservationSuccess(testData, itemName, planName, messages);
+  });
 });

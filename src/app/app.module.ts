@@ -31,7 +31,6 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
 import { LogInComponent } from './log-in/log-in.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
-import { SeLineChartComponent } from './se-line-chart/se-line-chart.component';
 import { UserInfoComponent } from './user-info/user-info.component';
 import { AccountManageComponent } from './account-manage/account-manage.component';
 import { ObservationItemComponent } from './observation-item/observation-item.component';
@@ -49,7 +48,6 @@ import {MatCardModule} from '@angular/material/card';
     CarePlanComponent,
     LogInComponent,
     SignUpComponent,
-    SeLineChartComponent,
     UserInfoComponent,
     AccountManageComponent,
     ObservationItemComponent,
