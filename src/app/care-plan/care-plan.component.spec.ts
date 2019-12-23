@@ -448,6 +448,7 @@ describe('CarePlanComponent', () => {
         failureCallback('test');
     });
     fixture = TestBed.createComponent(CarePlanComponent);
+    fixture.debugElement.nativeElement.style.visibility = "hidden";
     component = fixture.componentInstance;
     fixture.detectChanges();
     // authService = TestBed.get(AuthService);

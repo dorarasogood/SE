@@ -140,6 +140,7 @@ describe('ObservationItemDetailDialog', () => {
       });
       
       fixture = TestBed.createComponent(ObservationItemDetailDialog);
+      fixture.debugElement.nativeElement.style.visibility = "hidden";
       component = fixture.componentInstance;
       fixture.detectChanges();
     }));

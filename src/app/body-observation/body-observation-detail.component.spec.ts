@@ -101,6 +101,7 @@ describe('BodyObservationDetailDialog', () => {
         failureCallback('test');
     });
     fixture = TestBed.createComponent(BodyObservationDetailDialog);
+    fixture.debugElement.nativeElement.style.visibility = "hidden";
     component = fixture.componentInstance;
     fixture.detectChanges();
     authService = TestBed.get(AuthService);
@@ -177,6 +178,7 @@ describe('BodyObservationDetailDialogNewMode', ()=>{
 
   beforeEach(inject([BodyObservationService], (bodyObservationService: BodyObservationService) => {
     fixture = TestBed.createComponent(BodyObservationDetailDialog);
+    fixture.debugElement.nativeElement.style.visibility = "hidden";
     component = fixture.componentInstance;
     fixture.detectChanges();
     authService = TestBed.get(AuthService);

@@ -312,6 +312,7 @@ describe('ObservationItemComponent', () => {
         failureCallback('test');
     });
     fixture = TestBed.createComponent(ObservationItemComponent);
+    fixture.debugElement.nativeElement.style.visibility = "hidden";
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

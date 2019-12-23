@@ -54,6 +54,7 @@ describe('SignUpComponent', () => {
   beforeEach(() => {
     authService = TestBed.get(AuthService);
     fixture = TestBed.createComponent(SignUpComponent);
+    fixture.debugElement.nativeElement.style.visibility = "hidden";
     component = fixture.componentInstance;
     fixture.detectChanges();
     component.ngOnInit();
