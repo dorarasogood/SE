@@ -185,6 +185,7 @@ describe('LineChartComponent', () => {
     });
 
     fixture = TestBed.createComponent(LineChartComponent);
+    fixture.debugElement.nativeElement.style.visibility = "hidden";
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

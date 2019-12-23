@@ -71,6 +71,7 @@ describe('UserInfoComponent', () => {
       failureCallback();
     });
     fixture = TestBed.createComponent(UserInfoComponent);
+    fixture.debugElement.nativeElement.style.visibility = "hidden";
     component = fixture.componentInstance;
     fixture.detectChanges();
     component.ngOnInit();

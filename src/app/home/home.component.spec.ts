@@ -59,6 +59,7 @@ describe('HomeComponent', () => {
       failureCallback();
     });
     fixture = TestBed.createComponent(HomeComponent);
+    fixture.debugElement.nativeElement.style.visibility = "hidden";
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

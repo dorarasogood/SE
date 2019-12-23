@@ -394,6 +394,7 @@ describe('NotificationComponent', () => {
   });
 
     fixture = TestBed.createComponent(NotificationComponent);
+    fixture.debugElement.nativeElement.style.visibility = "hidden";
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

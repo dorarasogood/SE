@@ -54,6 +54,7 @@ describe('LogInComponent', () => {
   beforeEach(() => {
     authService = TestBed.get(AuthService);
     fixture = TestBed.createComponent(LogInComponent);
+    fixture.debugElement.nativeElement.style.visibility = "hidden";
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
