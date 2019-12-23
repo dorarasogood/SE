@@ -29,6 +29,15 @@ const model: DialogData = {
     id: 56899
 };
 
+const noIdModel: DialogData = {
+  itemOption: [{
+      id: '249507',
+      type: 'height',
+      unit: 'cm'
+  }],
+  id: undefined
+};
+
 describe('BodyObservationDetailDialog', () => {
   let component: BodyObservationDetailDialog;
   let fixture: ComponentFixture<BodyObservationDetailDialog>;
@@ -97,7 +106,7 @@ describe('BodyObservationDetailDialog', () => {
     authService = TestBed.get(AuthService);
   }));
 
-  it('should create', () => {
+  it('component should be created', () => {
     expect(component.dialogdata.id).toBe(56899);
     expect(component).toBeTruthy();
   });
@@ -107,20 +116,6 @@ describe('BodyObservationDetailDialog', () => {
     component.onNoClick();
     expect(spyObj).toHaveBeenCalledTimes(1);
   });
-
-  it('component should onOkClick', inject([BodyObservationService], (bodyObservationService: BodyObservationService) => {
-    spyOn(authService, 'getPatientId').and.callFake(() => {
-        return '56899';
-    });
-    const spyObj = spyOn(component.dialogRef, 'close').and.callThrough();
-    const spyObj_2 = spyOn(bodyObservationService, 'createObservation').and.callFake((body, successCallback, failureCallback) => {
-        successCallback('56899');
-        failureCallback('test');
-    });
-    component.onOkClick();
-    expect(spyObj).toHaveBeenCalledTimes(1);
-    expect(spyObj_2).toHaveBeenCalledTimes(1);
-  }));
 
   it('component should onUpdate', inject([BodyObservationService], (bodyObservationService: BodyObservationService) => {
     spyOn(authService, 'getPatientId').and.callFake(() => {
@@ -137,7 +132,73 @@ describe('BodyObservationDetailDialog', () => {
   }));
 
   it('component should getUnit', () => {
-    component.getUnit();
+    expect(component.getUnit()).toBe('cm');
   });
 
+  it('component should not getUnit', () => {
+    component.selectedType = '';
+    expect(component.getUnit()).toBe('');
+  });
+});
+
+describe('BodyObservationDetailDialogNewMode', ()=>{
+  let component: BodyObservationDetailDialog;
+  let fixture: ComponentFixture<BodyObservationDetailDialog>;
+  let authService: AuthService;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ BodyObservationDetailDialog ],
+      imports: [
+        MatFormFieldModule,
+        MatSelectModule,
+        FormsModule,
+        MatDatepickerModule,
+        HttpClientTestingModule,
+        MatNativeDateModule,
+        MatMomentDateModule,
+        MatInputModule,
+        BrowserAnimationsModule
+      ],
+      providers: [
+        {
+            provide: MatDialogRef,
+            useValue: dialogMock
+        },
+        {
+            provide: MAT_DIALOG_DATA,
+            useValue: noIdModel
+        },
+        AuthService
+      ]
+    })
+    .compileComponents();
+  }));
+
+  beforeEach(inject([BodyObservationService], (bodyObservationService: BodyObservationService) => {
+    fixture = TestBed.createComponent(BodyObservationDetailDialog);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+    authService = TestBed.get(AuthService);
+  }));
+
+  it('component should be created', () => {
+    expect(component.title).toBe('Create new observation');
+    expect(component).toBeTruthy();
+  });
+
+  it('component should onOkClick', inject([BodyObservationService], (bodyObservationService: BodyObservationService) => {
+    spyOn(authService, 'getPatientId').and.callFake(() => {
+        return '56899';
+    });
+    const spyObj = spyOn(component.dialogRef, 'close').and.callThrough();
+    const spyObj_2 = spyOn(bodyObservationService, 'createObservation').and.callFake((body, successCallback, failureCallback) => {
+        successCallback('56899');
+        failureCallback('test');
+    });
+    component.onOkClick();
+    expect(spyObj).toHaveBeenCalledTimes(1);
+    expect(spyObj_2).toHaveBeenCalledTimes(1);
+  }));
+  
 });

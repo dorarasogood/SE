@@ -31,7 +31,7 @@ export class BodyObservationDetailDialog implements OnInit {
       @Inject(MAT_DIALOG_DATA) public dialogdata: DialogData,
       private bodyObservationService: BodyObservationService) {
         this.itemOption = this.dialogdata.itemOption;
-        if (this.dialogdata.id == null){
+        if (this.dialogdata.id == undefined){
           this.title = 'Create new observation';
           this.date = new Date();
         } else {
