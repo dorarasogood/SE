@@ -373,12 +373,6 @@ describe('NotificationComponent', () => {
     .compileComponents();
   }));
 
-  // beforeEach(() => {
-  //   fixture = TestBed.createComponent(NotificationComponent);
-  //   component = fixture.componentInstance;
-  //   fixture.detectChanges();
-  // });
-
   beforeEach(inject([CarePlanService, BodyObservationService], (carePlanService: CarePlanService, bodyObservationService: BodyObservationService) => {
     let spy = spyOn(bodyObservationService, 'getAllObservationItem').and.callFake((successCallback, failureCallback) => {
         successCallback(allObservationItemData);
@@ -406,9 +400,10 @@ describe('NotificationComponent', () => {
 
   it('component should get observation failed', () => {
     let testData = {};
-    let itemName = 'test';
-    let planName = 'test';
+    let itemName = 'kg';
+    let planName = 'get Wegiht';
     let messages = [];
     component.getObservationSuccess(testData, itemName, planName, messages);
+    expect(testData).toEqual({});
   });
 });

@@ -141,14 +141,7 @@ export class CarePlanComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      // console.log('clickNew dialog was closed', result);
       this.afterClickNew(result);
-      // if(result === undefined) return;
-      // this.carePlanService.getCarePlan(result, 
-      //   (data)=>{
-      //     this.setCarePlan(data.entry[0].resource);
-      //     this.table.renderRows();
-      //   }, this.failureCallback);
     });
   }
 
@@ -172,29 +165,9 @@ export class CarePlanComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if(result === undefined) return;
-      // console.log('clickEdit dialog was closed', result);
         
-      this.afterClickEdit(result);
-        // if(result.hasOwnProperty("target")){
-        //   if(result["target"][0].hasOwnProperty("detailQuantity"))
-        //     if(result["target"][0]["detailQuantity"].hasOwnProperty("value"))
-        //     this.currentSelectedRow.value = result["target"][0]["detailQuantity"]["value"];
-        // }
-    
-        // if(result.hasOwnProperty("description"))
-        //   if(result["description"].hasOwnProperty("text"))
-        //     this.currentSelectedRow.name = result["description"]["text"];
-          
-        // if(result.hasOwnProperty("outcomeReference")){
-        //   let itemType = result["outcomeReference"][0]["reference"].split('/')[1];
-        //   this.itemOption.forEach((item)=>{
-        //     if(item.id == itemType)
-        //       this.currentSelectedRow.type = item.type;
-        //   });
-        // }
-        
-        this.table.renderRows();
-      
+      this.afterClickEdit(result);    
+      this.table.renderRows();
       });
   }
 

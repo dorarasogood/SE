@@ -432,12 +432,6 @@ describe('CarePlanComponent', () => {
     .compileComponents();
   }));
 
-  // beforeEach(() => {
-  //   fixture = TestBed.createComponent(CarePlanComponent);
-  //   component = fixture.componentInstance;
-  //   fixture.detectChanges();
-  // });
-
   beforeEach(inject([CarePlanService, BodyObservationService], (carePlanService: CarePlanService, bodyObservationService: BodyObservationService) => {
     let spy = spyOn(bodyObservationService, 'getAllObservationItem').and.callFake((successCallback, failureCallback) => {
         successCallback(allObservationItemData);
@@ -451,7 +445,6 @@ describe('CarePlanComponent', () => {
     fixture.debugElement.nativeElement.style.visibility = "hidden";
     component = fixture.componentInstance;
     fixture.detectChanges();
-    // authService = TestBed.get(AuthService);
     ren = TestBed.get(Renderer2);
   }));
 
@@ -488,7 +481,6 @@ describe('CarePlanComponent', () => {
 
   it('test_clickNew',
     inject([CarePlanService], (carePlanService: CarePlanService) => {
-
       let spy2 = spyOn(carePlanService, 'getCarePlan').and.callFake((id, successCallback, failureCallback) => {
         successCallback(carePlanData);
         failureCallback('test');

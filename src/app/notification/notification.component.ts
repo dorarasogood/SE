@@ -69,9 +69,8 @@ export class NotificationComponent implements OnInit {
     }
   }
 
-  getObservationSuccess(data,itemName, planName, messages){
+  getObservationSuccess(data, itemName, planName, messages){
     if(!data.hasOwnProperty("entry")){
-      console.log("test");
       messages.push({
         "text": planName + "需要今天記錄你的" + itemName
       })

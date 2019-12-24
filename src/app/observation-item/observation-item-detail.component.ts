@@ -22,7 +22,6 @@ export class ObservationItemDetailDialog implements OnInit {
         public dialogRef: MatDialogRef<ObservationItemDetailDialog>,
         @Inject(MAT_DIALOG_DATA) public id: DialogData, 
         private bodyObservationService: BodyObservationService) {
-          console.log("data = ", this.id);
           if(this.id == undefined){
             this.title = "Create new observation item";
           }else{

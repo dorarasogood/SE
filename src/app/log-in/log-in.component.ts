@@ -29,7 +29,6 @@ export class LogInComponent {
       const userName = loginForm.form.value.userName;
       const password = loginForm.form.value.password;
       this.authService.login(userName, password,(data)=>{
-        console.log("callback", data);
         this.router.navigate(['/home']);
       }, ()=>{console.log("error")});
     } else {

@@ -30,7 +30,6 @@ export class CarePlanDetailDialog implements OnInit {
       public dialogRef: MatDialogRef<CarePlanDetailDialog>,
       @Inject(MAT_DIALOG_DATA) public dialogdata:DialogData, 
       private carePlanService: CarePlanService) {
-        console.log("data = ", this.dialogdata.id);
         this.itemOption = this.dialogdata.itemOption;
         if(this.dialogdata.id == null){
           this.title = "Create new care plan";
@@ -78,7 +77,6 @@ export class CarePlanDetailDialog implements OnInit {
     onOkClick(): void {
         let body = this.httpBody();
         this.carePlanService.createCarePlan(body, data=>{
-            console.log("data", data);
             this.dialogRef.close(data.id);
         }, error=>{
           console.log("error = ", error);
@@ -93,15 +91,5 @@ export class CarePlanDetailDialog implements OnInit {
       });
     }
 
-    // getUnit(): string {
-    //   let unit = '';
-    //   this.itemOption.forEach((element)=>{
-    //     if(this.selectedType == element.id){
-    //       unit = element.unit;
-    //       this.unit = element.unit;
-    //     }
-    //   })
-    //   return unit;
-    // }
     ngOnInit() {}
 }
