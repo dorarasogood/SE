@@ -88,7 +88,7 @@ export class AuthService {
     let options = {
       headers
     };
-    this.http.get<any>("http://hapi.fhir.org/baseR4/Patient?_id=" + patientId + "&_pretty=true&_format=json", options)
+    this.http.get<any>("http://140.124.181.142:8888/hapi-fhir-jpaserver/fhir/Patient?_id=" + patientId + "&_pretty=true&_format=json", options)
     .subscribe((data)=>{
       successCallback(data.entry[0].resource);
     }, failureCallback);
@@ -104,7 +104,7 @@ export class AuthService {
       headers
     };
 
-    this.http.put<any>("http://hapi.fhir.org/baseR4/Patient/" + patientId + "?_format=json&_pretty=true", body, options)
+    this.http.put<any>("http://140.124.181.142:8888/hapi-fhir-jpaserver/fhir/Patient/" + patientId + "?_format=json&_pretty=true", body, options)
     .subscribe(successCallback, failureCallback);
   }
 

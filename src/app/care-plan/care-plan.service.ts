@@ -23,11 +23,11 @@ export class CarePlanService {
     this.http.get(url).subscribe(successCallback, failureCallback);
   }
   deleteCarePlan(id, successCallback, failureCallback){
-    this.http.delete("http://hapi.fhir.org/baseR4/Goal/" + id + "?_pretty=true")
+    this.http.delete("http://140.124.181.142:8888/hapi-fhir-jpaserver/fhir/Goal/" + id + "?_pretty=true")
     .subscribe(successCallback, failureCallback);
   };
   getCarePlan(id, successCallback, failureCallback){
-    this.http.get("http://hapi.fhir.org/baseR4/Goal?_id=" + id + "&_pretty=true")
+    this.http.get("http://140.124.181.142:8888/hapi-fhir-jpaserver/fhir/Goal?_id=" + id + "&_pretty=true")
     .subscribe(successCallback, failureCallback);
   }
   createCarePlan(body, successCallback, failureCallback){
@@ -41,7 +41,7 @@ export class CarePlanService {
       "reference": "Patient/" + this.authService.getPatientId()
     };
     body = JSON.stringify(body);
-    this.http.post<any>("http://hapi.fhir.org/baseR4/Goal?_format=json&_pretty=true", body, options)
+    this.http.post<any>("http://140.124.181.142:8888/hapi-fhir-jpaserver/fhir/Goal?_format=json&_pretty=true", body, options)
     .subscribe(successCallback, failureCallback);
   }
   editCarePlan(id, body, successCallback, failureCallback){
@@ -56,7 +56,7 @@ export class CarePlanService {
       "reference": "Patient/" + this.authService.getPatientId()
     };
     body = JSON.stringify(body);
-    this.http.put<any>("http://hapi.fhir.org/baseR4/Goal/" + id + "?_format=json&_pretty=true", body, options)
+    this.http.put<any>("http://140.124.181.142:8888/hapi-fhir-jpaserver/fhir/Goal/" + id + "?_format=json&_pretty=true", body, options)
     .subscribe(successCallback, failureCallback);
   }
 }
