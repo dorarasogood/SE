@@ -45,6 +45,9 @@ export class NotificationComponent implements OnInit {
   getCarePlanSuccess(data, bodyObservationService): void {
     if(data.hasOwnProperty("entry")){
       data["entry"].forEach(element=>{
+        if(!element["resource"].hasOwnProperty("outcomeReference")){
+          return;
+        }
         let itemId = element["resource"]["outcomeReference"][0].reference.split('/')[1]; 
         let planName = element["resource"]["description"]["text"];
         let itemName = "";
@@ -71,6 +74,10 @@ export class NotificationComponent implements OnInit {
 
   getObservationSuccess(data, itemName, planName, messages){
     if(!data.hasOwnProperty("entry")){
+      messages.push({
+        "text": planName + "需要今天記錄你的" + itemName
+      })
+    }else if(data["entry"].length == 1 && !data["entry"][0].resource.hasOwnProperty("valueQuantity")){
       messages.push({
         "text": planName + "需要今天記錄你的" + itemName
       })

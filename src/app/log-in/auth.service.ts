@@ -31,7 +31,7 @@ export class AuthService {
       "userName": userName,
       "password": password
     }
-    this.http.post<any>("http://127.0.0.1:3000/users", obj, options)
+    this.http.post<any>("http://140.124.181.142:3000/users", obj, options)
     .subscribe((data)=>{
       localStorage.setItem("User", JSON.stringify(data));
       successCallback(data);
@@ -51,7 +51,7 @@ export class AuthService {
       "userName": userName,
       "password": password
     }
-    this.http.post<any>("http://127.0.0.1:3000/user/create", obj, options)
+    this.http.post<any>("http://140.124.181.142:3000/user/create", obj, options)
     .subscribe(successCallback, failureCallback);
   }
 
@@ -76,7 +76,7 @@ export class AuthService {
       "userName": userName,
       "password": password
     };
-    this.http.post<any>("http://127.0.0.1:3000/users/userInfo", obj, options)
+    this.http.post<any>("http://140.124.181.142:3000/users/userInfo", obj, options)
     .subscribe(successCallback, failureCallback);
   }
 
@@ -125,7 +125,7 @@ export class AuthService {
       "oldPassword": oldPassword,
       "newPassword": newPassword
     };
-    this.http.post<any>("http://127.0.0.1:3000/users/password", obj, options)
+    this.http.post<any>("http://140.124.181.142:3000/users/password", obj, options)
     .subscribe(successCallback, failureCallback);
   }
 }

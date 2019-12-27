@@ -80,7 +80,8 @@ export class CarePlanComponent implements OnInit {
       if(carePlan["target"][0].hasOwnProperty("detailQuantity"))
         if(carePlan["target"][0]["detailQuantity"].hasOwnProperty("value"))
         value = carePlan["target"][0]["detailQuantity"]["value"];
-    }
+    }else
+      return;
 
     if(carePlan.hasOwnProperty("description"))
       if(carePlan["description"].hasOwnProperty("text"))
@@ -169,6 +170,18 @@ export class CarePlanComponent implements OnInit {
       this.afterClickEdit(result);    
       this.table.renderRows();
       });
+  }
+
+  clickDelete(){
+    this.carePlanService.deleteCarePlan(this.currentSelectedRow.id,data=>{
+      let index = this.dataSource.data.findIndex((element)=>{
+        return element === this.currentSelectedRow;
+      })
+      this.currentSelectedRow = null;
+      this.dataSource.data.splice(index, 1);
+      this.table.renderRows();
+      this.enableButtonBySelectData(false);
+    },this.failureCallback)
   }
 
   afterClickEdit(result){

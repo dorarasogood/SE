@@ -12,7 +12,7 @@ export class CarePlanService {
   }
 
   getAllCarePlan(successCallback, failureCallback){
-    let url = "http://hapi.fhir.org/baseR4/Goal?patient=";
+    let url = "http://140.124.181.142:8888/hapi-fhir-jpaserver/fhir/Goal?patient=";
     url = url + this.authService.getPatientId();
 
     // if(itemType != "all")

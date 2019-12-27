@@ -62,11 +62,13 @@ export class LineChartComponent {
   setCarePlanItem(planSource): void{
     planSource.forEach((plan)=>{
       let type = plan.resource.outcomeReference[0].reference.split('/')[1];
-      this.planOption.push({
-        text: plan.resource.description.text,
-        observetype: type,
-        balance: plan.resource.target[0].detailQuantity.value
-      });
+      if(plan.resource.target[0].hasOwnProperty("detailQuantity")){
+        this.planOption.push({
+          text: plan.resource.description.text,
+          observetype: type,
+          balance: plan.resource.target[0].detailQuantity.value
+        });
+      }
     })
   }
 
