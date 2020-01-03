@@ -28,19 +28,19 @@ describe('CarePlanService', () =>{
             return '56899';
         })
         service.getAllCarePlan(()=>{}, ()=>{});
-        const req = httpMock.expectOne("http://hapi.fhir.org/baseR4/Goal?patient=56899&_pretty=true&_format=json");
+        const req = httpMock.expectOne("http://140.124.181.142:8888/hapi-fhir-jpaserver/fhir/Goal?patient=56899&_pretty=true&_format=json");
         expect(req.request.method).toBe('GET');
     }))
     
     it('deleteCarePlan', () =>{
         service.deleteCarePlan(56899, ()=>{}, ()=>{});
-        const req = httpMock.expectOne('http://hapi.fhir.org/baseR4/Goal/56899?_pretty=true');
+        const req = httpMock.expectOne('http://140.124.181.142:8888/hapi-fhir-jpaserver/fhir/Goal/56899?_pretty=true');
         expect(req.request.method).toBe('DELETE');
     })
 
     it('getCarePlan', () =>{
         service.getCarePlan(56899, ()=>{}, ()=>{});
-        const req = httpMock.expectOne('http://hapi.fhir.org/baseR4/Goal?_id=56899&_pretty=true');
+        const req = httpMock.expectOne('http://140.124.181.142:8888/hapi-fhir-jpaserver/fhir/Goal?_id=56899&_pretty=true');
         expect(req.request.method).toBe('GET');
     })
 
@@ -49,7 +49,7 @@ describe('CarePlanService', () =>{
             return '56899';
         })
         service.createCarePlan({}, ()=>{}, ()=>{});
-        const req = httpMock.expectOne("http://hapi.fhir.org/baseR4/Goal?_format=json&_pretty=true");
+        const req = httpMock.expectOne("http://140.124.181.142:8888/hapi-fhir-jpaserver/fhir/Goal?_format=json&_pretty=true");
         expect(req.request.method).toBe('POST');
     }))
 
@@ -58,7 +58,7 @@ describe('CarePlanService', () =>{
             return '56899';
         })
         service.editCarePlan(56899,{}, ()=>{}, ()=>{});
-        const req = httpMock.expectOne("http://hapi.fhir.org/baseR4/Goal/56899?_format=json&_pretty=true");
+        const req = httpMock.expectOne("http://140.124.181.142:8888/hapi-fhir-jpaserver/fhir/Goal/56899?_format=json&_pretty=true");
         expect(req.request.method).toBe('PUT');
     }))
 })

@@ -64,7 +64,7 @@ describe('BodyObservationService', () => {
       let spy2 = spyOn(authService, 'getPatientId').and.returnValue('56899');
       service.getAllObservation(dateRange, "all", ()=>{}, ()=>{});
 
-      const req = httpMock.expectOne('http://hapi.fhir.org/baseR4/Observation?patient=56899&date=>=2019-12-01&date=<=2019-12-30&_pretty=true&_format=json');
+      const req = httpMock.expectOne('http://140.124.181.142:8888/hapi-fhir-jpaserver/fhir/Observation?patient=56899&date=>=2019-12-01&date=<=2019-12-30&_pretty=true&_format=json');
       expect(req.request.method).toBe('GET');
 
     })
@@ -75,7 +75,7 @@ describe('BodyObservationService', () => {
       let spy2 = spyOn(authService, 'getPatientId').and.returnValue('56899');
       service.getAllObservation(dateRange2, 249628, ()=>{}, ()=>{});
 
-      const req = httpMock.expectOne('http://hapi.fhir.org/baseR4/Observation?patient=56899&date=2019-12-26&derived-from=249628&_pretty=true&_format=json');
+      const req = httpMock.expectOne('http://140.124.181.142:8888/hapi-fhir-jpaserver/fhir/Observation?patient=56899&date=2019-12-26&derived-from=249628&_pretty=true&_format=json');
       expect(req.request.method).toBe('GET');
 
     })
@@ -83,13 +83,13 @@ describe('BodyObservationService', () => {
 
   it('test_deleteObservation', () => {
     service.deleteObservation(56899, ()=>{}, ()=>{});
-    const req = httpMock.expectOne('http://hapi.fhir.org/baseR4/Observation/56899?_pretty=true');
+    const req = httpMock.expectOne('http://140.124.181.142:8888/hapi-fhir-jpaserver/fhir/Observation/56899?_pretty=true');
     expect(req.request.method).toBe('DELETE');
   });
 
   it('test_getObservation', () => {
     service.getObservation(56899, ()=>{}, ()=>{});
-    const req = httpMock.expectOne('http://hapi.fhir.org/baseR4/Observation?_id=56899&_pretty=true');
+    const req = httpMock.expectOne('http://140.124.181.142:8888/hapi-fhir-jpaserver/fhir/Observation?_id=56899&_pretty=true');
     expect(req.request.method).toBe('GET');
   });
 
@@ -98,7 +98,7 @@ describe('BodyObservationService', () => {
       let spy2 = spyOn(authService, 'getPatientId').and.returnValue('56899');
       service.createObservation(observationData, ()=>{}, ()=>{});
 
-      const req = httpMock.expectOne('http://hapi.fhir.org/baseR4/Observation?_format=json&_pretty=true');
+      const req = httpMock.expectOne('http://140.124.181.142:8888/hapi-fhir-jpaserver/fhir/Observation?_format=json&_pretty=true');
       expect(req.request.method).toBe('POST');
     })
   );
@@ -108,7 +108,7 @@ describe('BodyObservationService', () => {
       let spy2 = spyOn(authService, 'getPatientId').and.returnValue('56899');
       service.editObservation(251484, observationData, ()=>{}, ()=>{});
 
-      const req = httpMock.expectOne('http://hapi.fhir.org/baseR4/Observation/251484?_format=json&_pretty=true');
+      const req = httpMock.expectOne('http://140.124.181.142:8888/hapi-fhir-jpaserver/fhir/Observation/251484?_format=json&_pretty=true');
       expect(req.request.method).toBe('PUT');
     })
   );
@@ -118,7 +118,7 @@ describe('BodyObservationService', () => {
       let spy2 = spyOn(authService, 'getPatientId').and.returnValue('56899');
       service.getAllObservationItem(()=>{}, ()=>{});
 
-      const req = httpMock.expectOne('http://hapi.fhir.org/baseR4/Observation?patient=56899&code=unit&_pretty=true');
+      const req = httpMock.expectOne('http://140.124.181.142:8888/hapi-fhir-jpaserver/fhir/Observation?patient=56899&code=unit&_pretty=true');
       expect(req.request.method).toBe('GET');
     })
   );
