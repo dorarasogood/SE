@@ -65,6 +65,16 @@
 <br>
 <br>
 
+## Unit Test Result
+- - - -
+
+`Unit Test Result`
+
+![unit_test](/readme_images/unit_test.png)
+
+<br>
+<br>
+
 ## 啟動
 - - - -
 1. 安裝Nodejs 
