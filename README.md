@@ -1,27 +1,73 @@
-# SE 
+# 健康追蹤系統(Health Tracking System)
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.14.
+為了幫助患者進行健康管理，協助病人諮詢問題而設計的系統(前端部分)。
+<br>本系統主要分為兩個部分:
+1. 帳戶管理子系統(AMS，Account Management Subsyetem) (後端:https://github.com/dorarasogood/SE_server)
+2. 健康管理子系統(HMS，Health Management Subsystem) (後端:https://hapi.fhir.org/)
 
-## Development server
+<br>
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+|        |       |
+|  ----  | ----  |
+| 框架   | Angular |
+| 語言   | TypeScript |
 
-## Code scaffolding
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+<br>
+<br>
+<br>
 
-## Build
+## 使用者介面
+- - - -
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+`健康管理`
 
-## Running unit tests
+![hms](/readme_images/hms.png)
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+`編輯`
 
-## Running end-to-end tests
+![hms_edit](/readme_images/hms_edit.png)
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+`照護計畫圖表`
 
-## Further help
+![hms_chart](/readme_images/hms_chart.png)
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+`帳號管理`
+
+![account_management](/readme_images/account_management.png)
+
+<br>
+<br>
+
+## 設計
+- - - -
+
+`系統架構圖設計`
+
+![system_architecture](/readme_images/system_architecture.png)
+
+`帳戶管理子系統架構圖`
+
+![ams_architecture](/readme_images/ams_architecture.jpg)
+
+`健康管理子系統架構圖`
+
+![hms_architecture](/readme_images/hms_architecture.jpg)
+
+`Class Diagram`
+
+![class_diagram](/readme_images/class_diagram.png)
+
+`其中一個Sequence Diagram`
+
+![sd](/readme_images/sd.png)
+
+<br>
+<br>
+
+## 啟動
+- - - -
+1. 安裝Nodejs 
+2. npm install -g @angular/cli 
+3. ng build 
+4. ng serve --open 
